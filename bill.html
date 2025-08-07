@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Pay Your Bill</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
   <style>
     body {
@@ -16,28 +15,31 @@
       padding: 40px;
     }
     h1 { text-align: center; }
-    #qr {
-      margin-top: 20px;
-      box-shadow: 0 0 20px cyan;
-    }
     .total {
-      margin-top: 30px;
+      margin-top: 20px;
       font-size: 1.5rem;
+    }
+    .qr-container {
+      margin-top: 30px;
+      box-shadow: 0 0 20px cyan;
+      padding: 20px;
+      border-radius: 12px;
+      background: #111;
+    }
+    img.qr {
+      width: 200px;
+      height: 200px;
     }
   </style>
 </head>
 <body>
   <h1>Final Bill</h1>
   <div class="total">Total: ₹4500</div>
-  <canvas id="qr"></canvas>
-  <p>Scan to Pay via UPI</p>
 
-  <script>
-    const qr = new QRious({
-      element: document.getElementById('qr'),
-      value: "upi://pay?pa=rgbhotel@upi&pn=RGB%20Hotel&am=4500&cu=INR",
-      size: 200
-    });
-  </script>
+  <div class="qr-container">
+    <img src="myqr.png" alt="QR Code" class="qr" />
+  </div>
+
+  <p>Scan this QR Code to pay via UPI</p>
 </body>
 </html>
