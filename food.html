@@ -1,17 +1,76 @@
-<!-- inside food.html -->
-<button onclick="calculateFoodBill()">Place Order</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Food</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #000;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      padding: 40px;
+    }
+    h1 { text-align: center; }
+    .menu {
+      max-width: 400px;
+      margin: auto;
+      background: #111;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px green;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: linear-gradient(90deg, red, yellow);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Food Menu</h1>
+  <div class="menu">
+    <label>Pizza - ₹250</label>
+    <input type="number" id="pizza" placeholder="Qty" />
+    
+    <label>Burger - ₹150</label>
+    <input type="number" id="burger" placeholder="Qty" />
+    
+    <label>Pasta - ₹200</label>
+    <input type="number" id="pasta" placeholder="Qty" />
+    
+    <label>Coke - ₹50</label>
+    <input type="number" id="coke" placeholder="Qty" />
 
-<script>
-  function calculateFoodBill() {
-    const prices = [250, 150, 200, 50];
-    const quantities = document.querySelectorAll('input[type="number"]');
-    let total = 0;
+    <button onclick="calculateFoodBill()">Place Order</button>
+  </div>
 
-    quantities.forEach((input, index) => {
-      total += (parseInt(input.value) || 0) * prices[index];
-    });
+  <script>
+    function calculateFoodBill() {
+      const qtyPizza = parseInt(document.getElementById("pizza").value) || 0;
+      const qtyBurger = parseInt(document.getElementById("burger").value) || 0;
+      const qtyPasta = parseInt(document.getElementById("pasta").value) || 0;
+      const qtyCoke = parseInt(document.getElementById("coke").value) || 0;
 
-    localStorage.setItem('foodTotal', total);
-    alert('Food order placed! Total: ₹' + total);
-  }
-</script>
+      const total = qtyPizza * 250 + qtyBurger * 150 + qtyPasta * 200 + qtyCoke * 50;
+      localStorage.setItem('foodTotal', total);
+      alert("Order placed! Total: ₹" + total);
+    }
+  </script>
+</body>
+</html>
