@@ -53,3 +53,19 @@
   </form>
 </body>
 </html>
+<!-- inside booking.html -->
+<button type="button" onclick="bookRoom()">Book Room</button>
+
+<script>
+  function bookRoom() {
+    const roomType = document.querySelector('select').value;
+    let price = 0;
+
+    if (roomType.includes("Single")) price = 1000;
+    if (roomType.includes("Double")) price = 1800;
+    if (roomType.includes("Suite")) price = 3000;
+
+    localStorage.setItem('roomTotal', price);
+    alert("Room booked! Price: ₹" + price);
+  }
+</script>
