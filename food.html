@@ -76,3 +76,20 @@
   </div>
 </body>
 </html>
+<!-- inside food.html -->
+<button onclick="calculateFoodBill()">Place Order</button>
+
+<script>
+  function calculateFoodBill() {
+    const prices = [250, 150, 200, 50];
+    const quantities = document.querySelectorAll('input[type="number"]');
+    let total = 0;
+
+    quantities.forEach((input, index) => {
+      total += (parseInt(input.value) || 0) * prices[index];
+    });
+
+    localStorage.setItem('foodTotal', total);
+    alert('Food order placed! Total: ₹' + total);
+  }
+</script>
