@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Food</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #000;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      padding: 40px;
+    }
+    h1 { text-align: center; }
+    .menu {
+      max-width: 400px;
+      margin: auto;
+      background: #111;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px green;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: linear-gradient(90deg, red, yellow);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Food Menu</h1>
+  <div class="menu">
+    <label>Pizza - ₹250</label>
+    <input type="number" placeholder="Qty" />
+
+    <label>Burger - ₹150</label>
+    <input type="number" placeholder="Qty" />
+
+    <label>Pasta - ₹200</label>
+    <input type="number" placeholder="Qty" />
+
+    <label>Coke - ₹50</label>
+    <input type="number" placeholder="Qty" />
+
+    <button onclick="alert('Order placed!')">Place Order</button>
+  </div>
+</body>
+</html>
