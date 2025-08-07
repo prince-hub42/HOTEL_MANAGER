@@ -43,3 +43,13 @@
   <p>Scan this QR Code to pay via UPI</p>
 </body>
 </html>
+<!-- inside bill.html -->
+<div class="total" id="total"></div>
+
+<script>
+  const foodTotal = parseInt(localStorage.getItem('foodTotal')) || 0;
+  const roomTotal = parseInt(localStorage.getItem('roomTotal')) || 0;
+  const grandTotal = foodTotal + roomTotal;
+
+  document.getElementById("total").innerText = "Total: ₹" + grandTotal;
+</script>
