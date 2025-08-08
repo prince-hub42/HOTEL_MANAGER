@@ -1,16 +1,119 @@
-<!-- inside booking.html -->
-<button type="button" onclick="bookRoom()">Book Room</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotel Room Booking</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .container {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        max-width: 400px;
+        width: 100%;
+        backdrop-filter: blur(8px);
+        text-align: center;
+    }
+    h1 {
+        margin-bottom: 15px;
+        font-size: 28px;
+    }
+    select, button {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+    select {
+        background: white;
+        color: black;
+    }
+    button {
+        background: #ff9800;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: #e68900;
+        transform: scale(1.05);
+    }
+    .room-card {
+        background: rgba(255,255,255,0.15);
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 15px;
+    }
+    .room-card img {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .price {
+        font-size: 18px;
+        margin-top: 5px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏨 Book Your Room</h1>
+    <select id="roomType" onchange="updateRoomDetails()">
+        <option value="" disabled selected>-- Select Room Type --</option>
+        <option value="1000" data-img="https://via.placeholder.com/350x200?text=Single+Room">Single - ₹1000</option>
+        <option value="1600" data-img="https://via.placeholder.com/350x200?text=Double+Room">Double - ₹1600</option>
+        <option value="3000" data-img="https://via.placeholder.com/350x200?text=Suite+Room">Suite - ₹3000</option>
+    </select>
+
+    <div class="room-card" id="roomDetails" style="display:none;">
+        <img id="roomImage" src="" alt="Room Image">
+        <div class="price" id="roomPrice"></div>
+    </div>
+
+    <button onclick="bookRoom()">Book Room</button>
+</div>
 
 <script>
-  function bookRoom() {
-    const roomType = document.querySelector('select').value;
-    let price = 0;
+function updateRoomDetails() {
+    const roomSelect = document.getElementById('roomType');
+    const selectedOption = roomSelect.options[roomSelect.selectedIndex];
+    const price = selectedOption.value;
+    const img = selectedOption.getAttribute('data-img');
 
-    if (roomType.includes("Single")) price = 1000;
-    if (roomType.includes("Double")) price = 1600;
-    if (roomType.includes("Suite")) price = 3000;
+    document.getElementById('roomDetails').style.display = 'block';
+    document.getElementById('roomImage').src = img;
+    document.getElementById('roomPrice').textContent = "Price: ₹" + price;
+}
+
+function bookRoom() {
+    const roomSelect = document.getElementById('roomType');
+    const price = roomSelect.value;
+
+    if (!price) {
+        alert("Please select a room type!");
+        return;
+    }
 
     localStorage.setItem('roomTotal', price);
-    alert("Room booked! Price: ₹" + price);
-  }
+    alert(`✅ Room booked successfully!\nPrice: ₹${price}`);
+    window.location.href = "bill.html"; // Redirect to bill page
+}
 </script>
+
+</body>
+</html>
