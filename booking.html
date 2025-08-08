@@ -4,11 +4,12 @@
 <meta charset="UTF-8" />
 <title>Book a Room - Buddy's Hotel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
+<!-- Montserrat font -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <style>
   body {
     margin: 0;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: white;
     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
     padding: 20px;
@@ -16,7 +17,7 @@
   header {
     text-align: center;
     font-size: 2rem;
-    font-weight: bold;
+    font-weight: 600;
     margin: 30px 0 20px;
   }
   /* Sticky top bar */
@@ -213,12 +214,10 @@
   const modalMessage = document.getElementById('modal-message');
   const closeModalBtn = document.getElementById('closeModal');
 
-  // Close modal handler
   closeModalBtn.addEventListener('click', () => {
     modal.classList.remove('active');
   });
 
-  // Handle booking buttons
   document.querySelectorAll('.room-card').forEach(card => {
     const bookBtn = card.querySelector('.book-btn');
     const nightsInput = card.querySelector('.nights-input');
@@ -235,12 +234,10 @@
 
       const totalPrice = pricePerNight * nights;
 
-      // Save booking info to localStorage
       localStorage.setItem('roomName', roomName);
       localStorage.setItem('roomNights', nights);
       localStorage.setItem('roomTotal', totalPrice);
 
-      // Show modal confirmation
       modalMessage.textContent = `You have booked the ${roomName} for ${nights} night(s).\nTotal Price: ₹${totalPrice}`;
       modal.classList.add('active');
     });
