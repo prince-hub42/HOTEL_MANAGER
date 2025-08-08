@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Buddy's Cafe & Hotel - Home</title>
+<title>Buddy's Hotel - Home</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -39,6 +39,7 @@
         gap: 25px;
         margin: 0;
         padding: 0;
+        flex-wrap: wrap;
     }
     nav a {
         color: white;
@@ -126,6 +127,7 @@
         flex: 1 1 300px;
         text-align: center;
         transition: transform 0.3s;
+        cursor: pointer;
     }
     .card i {
         font-size: 2rem;
@@ -155,6 +157,26 @@
         text-align: center;
         font-size: 0.9rem;
     }
+
+    /* Responsive */
+    @media(max-width: 768px) {
+        .hero-content h1 {
+            font-size: 2.2rem;
+        }
+        nav {
+            padding: 15px 20px;
+        }
+        section {
+            padding: 40px 20px;
+        }
+        .about-content {
+            flex-direction: column;
+        }
+        .about img {
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+    }
 </style>
 </head>
 <body>
@@ -166,6 +188,9 @@
         <li><a href="#">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
+        <li><a href="booking.html">Book a Room</a></li>
+        <li><a href="food.html">Order Food</a></li>
+        <li><a href="bill.html">View Bill & Pay</a></li>
         <li><a href="#contact">Contact</a></li>
     </ul>
 </nav>
@@ -173,7 +198,7 @@
 <!-- Hero -->
 <section class="hero">
     <div class="hero-content" data-aos="fade-right">
-        <h1>Welcome to Buddy's Cafe</h1>
+        <h1>Welcome to Buddy's Hotel</h1>
         <p>Experience luxury and comfort like never before. Book your stay with us today.</p>
         <a href="booking.html" class="btn-primary">Book Now</a>
     </div>
@@ -185,7 +210,7 @@
         <img src="about_hotel.jpg" alt="About Buddy's Hotel">
         <div>
             <h2>About Us</h2>
-            <p>Buddy's Cafe offers a world-class experience in hospitality, blending comfort, elegance, and exceptional service. Whether you're here for business or leisure, we promise an unforgettable stay.</p>
+            <p>Buddy's Hotel offers a world-class experience in hospitality, blending comfort, elegance, and exceptional service. Whether you're here for business or leisure, we promise an unforgettable stay.</p>
         </div>
     </div>
 </section>
@@ -194,21 +219,21 @@
 <section id="services" class="services">
     <h2 data-aos="fade-up">Our Services</h2>
     <div class="service-cards">
-        <div class="card" data-aos="fade-up" data-aos-delay="100">
+        <a href="booking.html" class="card" data-aos="fade-up" data-aos-delay="100" style="text-decoration:none; color: inherit;">
             <i class="fas fa-bed"></i>
             <h3>Room Booking</h3>
             <p>Luxurious rooms with top-notch amenities for your perfect stay.</p>
-        </div>
-        <div class="card" data-aos="fade-up" data-aos-delay="200">
+        </a>
+        <a href="food.html" class="card" data-aos="fade-up" data-aos-delay="200" style="text-decoration:none; color: inherit;">
             <i class="fas fa-utensils"></i>
             <h3>Dining</h3>
             <p>Delicious meals prepared by our world-class chefs.</p>
-        </div>
-        <div class="card" data-aos="fade-up" data-aos-delay="300">
+        </a>
+        <a href="bill.html" class="card" data-aos="fade-up" data-aos-delay="300" style="text-decoration:none; color: inherit;">
             <i class="fas fa-credit-card"></i>
             <h3>Bill Payment</h3>
             <p>Secure and quick bill payments for your convenience.</p>
-        </div>
+        </a>
     </div>
 </section>
 
@@ -231,7 +256,7 @@
 <footer id="contact">
     <p>📍 123 Luxury Street, City, Country</p>
     <p>📞 +1 234 567 890 | ✉ contact@buddyshotel.com</p>
-    <p>&copy; 2025 Buddy's Cafe. All rights reserved.</p>
+    <p>&copy; 2025 Buddy's Hotel. All rights reserved.</p>
 </footer>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
