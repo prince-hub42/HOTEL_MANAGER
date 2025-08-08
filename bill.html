@@ -1,142 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Bill & Payment - Buddy's Hotel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-<style>
+  <meta charset="UTF-8" />
+  <title>Buddy's Hotel - Bill & Payment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
     body {
-        font-family: 'Orbitron', sans-serif;
-        background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-        color: white;
-        text-align: center;
-        padding: 30px;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #000, #111);
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .bill-container {
+      background: rgba(255 255 255 / 0.05);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      width: 90%;
+      max-width: 600px;
+      padding: 30px;
+      box-shadow: 0 0 30px cyan;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      font-size: 2.5rem;
+      text-shadow: 0 0 15px cyan;
+      user-select: none;
     }
     table {
-        width: 60%;
-        margin: auto;
-        border-collapse: collapse;
-        background: rgba(255,255,255,0.1);
-        backdrop-filter: blur(10px);
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+      user-select: text;
     }
     th, td {
-        padding: 15px;
-        border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(0,255,255,0.2);
+      text-align: left;
     }
-    .total {
-        font-size: 1.5rem;
-        margin-top: 20px;
-        color: #00ffb3;
+    th {
+      color: #00ffc8;
+      font-weight: 600;
     }
-    img.qr {
-        margin-top: 20px;
-        width: 200px;
-        border-radius: 10px;
+    td.price {
+      text-align: right;
+      color: #0ff;
+      font-weight: 600;
+      min-width: 80px;
     }
-    input {
-        margin-top: 20px;
-        padding: 10px;
-        width: 250px;
-        border-radius: 8px;
-        border: none;
-        font-size: 1rem;
-        text-align: center;
+    .total-row td {
+      font-weight: 700;
+      font-size: 1.3rem;
+      border-top: 2px solid #0ff;
+      color: #00ffc8;
     }
     .pay-btn {
-        margin-top: 20px;
-        padding: 12px 25px;
-        font-size: 1.1rem;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        color: white;
-        background: linear-gradient(90deg, #ff4e50, #f9d423);
-        transition: 0.3s;
+      display: block;
+      width: 100%;
+      padding: 15px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #000;
+      background: linear-gradient(90deg, #00ffc8, #ff00de);
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      box-shadow: 0 0 25px cyan;
+      transition: transform 0.25s, box-shadow 0.3s;
+      user-select: none;
     }
     .pay-btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 15px white;
+      transform: scale(1.05);
+      box-shadow: 0 0 40px cyan;
     }
-</style>
+    .empty-msg {
+      text-align: center;
+      color: #888;
+      font-style: italic;
+      margin-top: 2rem;
+      user-select: none;
+    }
+  </style>
 </head>
 <body>
+  <div class="bill-container" role="main">
+    <h1>Your Bill Summary</h1>
+    <table aria-label="Ordered items">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Qty</th>
+          <th class="price">Price</th>
+        </tr>
+      </thead>
+      <tbody id="billItems">
+        <!-- Filled by JS -->
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="2">Total</td>
+          <td class="price" id="billTotal">₹0</td>
+        </tr>
+      </tfoot>
+    </table>
 
-<h1>💳 Your Bill</h1>
+    <button class="pay-btn" id="payBtn" aria-label="Proceed to payment">Proceed to Payment</button>
 
-<table id="billTable">
-    <tr>
-        <th>Item</th>
-        <th>Amount (₹)</th>
-    </tr>
-    <tr>
-        <td>Room Booking</td>
-        <td id="roomPrice">0</td>
-    </tr>
-    <tr>
-        <td>Food Order</td>
-        <td id="foodPrice">0</td>
-    </tr>
-</table>
+    <p class="empty-msg" id="emptyMsg" style="display:none;">You have no orders yet.</p>
+  </div>
 
-<div class="total">Total: ₹<span id="totalAmount">0</span></div>
+  <script>
+    const billItemsBody = document.getElementById('billItems');
+    const billTotalElem = document.getElementById('billTotal');
+    const payBtn = document.getElementById('payBtn');
+    const emptyMsg = document.getElementById('emptyMsg');
 
-<h2>Scan & Pay</h2>
-<img class="qr" src="myqr.png.jpg" alt="QR Code">
+    // Load food cart and room total from localStorage
+    let foodCart = JSON.parse(localStorage.getItem('foodCart') || '{}');
+    let roomTotal = parseFloat(localStorage.getItem('roomTotal') || 0);
+    let roomName = localStorage.getItem('roomName') || '';
 
-<!-- UTR Number Input -->
-<br>
-<input type="text" id="utrNumber" placeholder="Enter UTR Number">
-
-<br>
-<button class="pay-btn" onclick="completePayment()">✅ Payment Done</button>
-
-<script>
-    // Fetch stored values
-    let roomTotal = parseInt(localStorage.getItem("roomTotal")) || 0;
-    let foodTotal = parseInt(localStorage.getItem("foodTotal")) || 0;
-
-    document.getElementById("roomPrice").innerText = roomTotal;
-    document.getElementById("foodPrice").innerText = foodTotal;
-
-    let totalAmount = roomTotal + foodTotal;
-    document.getElementById("totalAmount").innerText = totalAmount;
-
-    function completePayment() {
-        let utr = document.getElementById("utrNumber").value.trim();
-
-        if (totalAmount === 0) {
-            alert("No items to pay for!");
-            return;
-        }
-        if (utr === "") {
-            alert("⚠ Please enter the UTR Number before confirming payment.");
-            return;
-        }
-
-        if (confirm("Are you sure payment is completed?")) {
-            // Save UTR in localStorage
-            localStorage.setItem("paymentUTR", utr);
-
-            // Add UTR row to the bill
-            let table = document.getElementById("billTable");
-            let row = table.insertRow(-1); // Append at end
-            let cell1 = row.insertCell(0);
-            let cell2 = row.insertCell(1);
-            cell1.innerText = "UTR Number";
-            cell2.innerText = utr;
-
-            // Clear stored amounts
-            localStorage.removeItem("roomTotal");
-            localStorage.removeItem("foodTotal");
-
-            alert("✅ Payment recorded successfully!\nUTR: " + utr);
-
-            // Reset input
-            document.getElementById("utrNumber").value = "";
-        }
+    // Helper format price
+    function formatPrice(price) {
+      return `₹${price.toFixed(2)}`;
     }
-</script>
 
+    function renderBill() {
+      billItemsBody.innerHTML = '';
+      let total = 0;
+      let hasItems = false;
+
+      // Add room if booked
+      if(roomTotal > 0 && roomName) {
+        hasItems = true;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${roomName} (Room)</td>
+          <td>1</td>
+          <td class="price">${formatPrice(roomTotal)}</td>
+        `;
+        billItemsBody.appendChild(tr);
+        total += roomTotal;
+      }
+
+      // Add food items
+      for(const itemName in foodCart) {
+        if(foodCart.hasOwnProperty(itemName)) {
+          const item = foodCart[itemName];
+          if(item.qty > 0) {
+            hasItems = true;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${itemName}</td>
+              <td>${item.qty}</td>
+              <td class="price">${formatPrice(item.price * item.qty)}</td>
+            `;
+            billItemsBody.appendChild(tr);
+            total += item.price * item.qty;
+          }
+        }
+      }
+
+      if(!hasItems) {
+        emptyMsg.style.display = 'block';
+        payBtn.style.display = 'none';
+        billItemsBody.innerHTML = '';
+        billTotalElem.textContent = '₹0';
+      } else {
+        emptyMsg.style.display = 'none';
+        payBtn.style.display = 'block';
+        billTotalElem.textContent = formatPrice(total);
+      }
+    }
+
+    payBtn.addEventListener('click', () => {
+      alert('Payment functionality coming soon! 🎉');
+    });
+
+    renderBill();
+  </script>
 </body>
 </html>
