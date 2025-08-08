@@ -2,135 +2,73 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Book a Room - Prince Hotel</title>
+<title>Bill & Payment - Prince Hotel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
 <style>
     body {
-        margin: 0;
         font-family: 'Orbitron', sans-serif;
-        color: white;
         background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-        overflow-x: hidden;
-    }
-    body::before {
-        content: "";
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: url('https://i.ibb.co/ZJxvS3w/aurora-bg.gif') center/cover no-repeat;
-        opacity: 0.4;
-        z-index: -1;
-    }
-    header {
-        text-align: center;
-        padding: 20px;
-        font-size: 2rem;
-        font-weight: bold;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(8px);
-        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-    }
-    .rooms {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 20px;
-        gap: 20px;
-    }
-    .room {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(12px);
-        border-radius: 15px;
-        overflow: hidden;
-        width: 300px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        transition: transform 0.3s ease;
-    }
-    .room:hover {
-        transform: scale(1.05);
-    }
-    .room img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
-    .room-details {
-        padding: 15px;
-        text-align: center;
-    }
-    .room-details h2 {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-    }
-    .price {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
-        color: #00ffb3;
-    }
-    button {
-        padding: 10px 20px;
-        border: none;
-        font-size: 1rem;
-        background: linear-gradient(90deg, #ff4e50, #f9d423);
         color: white;
-        cursor: pointer;
-        border-radius: 10px;
-        transition: transform 0.2s ease;
+        text-align: center;
+        padding: 30px;
     }
-    button:hover {
-        transform: scale(1.1);
+    table {
+        width: 60%;
+        margin: auto;
+        border-collapse: collapse;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+    }
+    th, td {
+        padding: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
     }
     .total {
-        text-align: center;
         font-size: 1.5rem;
-        margin: 20px 0;
+        margin-top: 20px;
+        color: #00ffb3;
+    }
+    img.qr {
+        margin-top: 20px;
+        width: 200px;
+        border-radius: 10px;
     }
 </style>
 </head>
 <body>
 
-<header>🏨 Book a Room - Prince Hotel</header>
+<h1>💳 Your Bill</h1>
 
-<div class="rooms">
-    <div class="room">
-        <img src="room1.jpg" alt="Deluxe Room">
-        <div class="room-details">
-            <h2>Deluxe Room</h2>
-            <p class="price">₹1500 / night</p>
-            <button onclick="addRoom(1500)">Book</button>
-        </div>
-    </div>
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Amount (₹)</th>
+    </tr>
+    <tr>
+        <td>Room Booking</td>
+        <td id="roomPrice">0</td>
+    </tr>
+    <tr>
+        <td>Food Order</td>
+        <td id="foodPrice">0</td>
+    </tr>
+</table>
 
-    <div class="room">
-        <img src="room2.jpg" alt="Luxury Suite">
-        <div class="room-details">
-            <h2>Luxury Suite</h2>
-            <p class="price">₹3000 / night</p>
-            <button onclick="addRoom(3000)">Book</button>
-        </div>
-    </div>
+<div class="total">Total: ₹<span id="totalAmount">0</span></div>
 
-    <div class="room">
-        <img src="room3.jpg" alt="Presidential Suite">
-        <div class="room-details">
-            <h2>Presidential Suite</h2>
-            <p class="price">₹5000 / night</p>
-            <button onclick="addRoom(5000)">Book</button>
-        </div>
-    </div>
-</div>
-
-<div class="total">Total: ₹<span id="totalPrice">0</span></div>
+<h2>Scan & Pay</h2>
+<img class="qr" src="your_qr_code.png" alt="QR Code">
 
 <script>
-    let total = parseInt(localStorage.getItem("roomTotal")) || 0;
-    document.getElementById("totalPrice").innerText = total;
+    let roomTotal = parseInt(localStorage.getItem("roomTotal")) || 0;
+    let foodTotal = parseInt(localStorage.getItem("foodTotal")) || 0;
 
-    function addRoom(price) {
-        total += price;
-        document.getElementById("totalPrice").innerText = total;
-        localStorage.setItem("roomTotal", total); // save for bill.html
-    }
+    document.getElementById("roomPrice").innerText = roomTotal;
+    document.getElementById("foodPrice").innerText = foodTotal;
+
+    let totalAmount = roomTotal + foodTotal;
+    document.getElementById("totalAmount").innerText = totalAmount;
 </script>
 
 </body>
