@@ -2,188 +2,132 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Buddy's Hotel - Bill & Payment</title>
+  <title>Buddy's Hotel - Bill</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Montserrat', sans-serif;
       background: linear-gradient(135deg, #000, #111);
-      color: #fff;
+      color: #00ffc8;
+      font-family: 'Montserrat', sans-serif;
       margin: 0;
       padding: 2rem;
       min-height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-    .bill-container {
-      background: rgba(255 255 255 / 0.05);
-      backdrop-filter: blur(15px);
-      border-radius: 15px;
-      width: 90%;
-      max-width: 600px;
-      padding: 30px;
-      box-shadow: 0 0 30px cyan;
+      flex-direction: column;
+      align-items: center;
     }
     h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-      font-weight: 600;
-      font-size: 2.5rem;
-      text-shadow: 0 0 15px cyan;
+      font-weight: 700;
+      margin-bottom: 1rem;
       user-select: none;
     }
     table {
       width: 100%;
+      max-width: 600px;
       border-collapse: collapse;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       user-select: text;
     }
     th, td {
-      padding: 12px 10px;
-      border-bottom: 1px solid rgba(0,255,255,0.2);
+      border: 1px solid #00ffc8;
+      padding: 10px 15px;
       text-align: left;
     }
     th {
-      color: #00ffc8;
-      font-weight: 600;
+      background: #004d40;
     }
-    td.price {
+    td.price, td.qty, td.subtotal {
       text-align: right;
-      color: #0ff;
-      font-weight: 600;
-      min-width: 80px;
     }
-    .total-row td {
+    tfoot td {
       font-weight: 700;
-      font-size: 1.3rem;
-      border-top: 2px solid #0ff;
-      color: #00ffc8;
-    }
-    .pay-btn {
-      display: block;
-      width: 100%;
-      padding: 15px;
       font-size: 1.2rem;
-      font-weight: 700;
-      color: #000;
-      background: linear-gradient(90deg, #00ffc8, #ff00de);
-      border: none;
-      border-radius: 15px;
-      cursor: pointer;
-      box-shadow: 0 0 25px cyan;
-      transition: transform 0.25s, box-shadow 0.3s;
-      user-select: none;
+      border-top: 2px solid #00ffc8;
     }
-    .pay-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 40px cyan;
-    }
-    .empty-msg {
-      text-align: center;
+    #emptyMsg {
+      font-size: 1.2rem;
       color: #888;
-      font-style: italic;
-      margin-top: 2rem;
+      margin-top: 50px;
       user-select: none;
     }
   </style>
 </head>
 <body>
-  <div class="bill-container" role="main">
-    <h1>Your Bill Summary</h1>
-    <table aria-label="Ordered items">
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Qty</th>
-          <th class="price">Price</th>
-        </tr>
-      </thead>
-      <tbody id="billItems">
-        <!-- Filled by JS -->
-      </tbody>
-      <tfoot>
-        <tr class="total-row">
-          <td colspan="2">Total</td>
-          <td class="price" id="billTotal">₹0</td>
-        </tr>
-      </tfoot>
-    </table>
 
-    <button class="pay-btn" id="payBtn" aria-label="Proceed to payment">Proceed to Payment</button>
+  <h1>Your Food Bill</h1>
 
-    <p class="empty-msg" id="emptyMsg" style="display:none;">You have no orders yet.</p>
-  </div>
+  <table id="billTable" aria-label="Food bill summary">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Price (₹)</th>
+        <th>Subtotal (₹)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Items will be populated here -->
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">Total</td>
+        <td id="totalAmount">₹0</td>
+      </tr>
+    </tfoot>
+  </table>
 
-  <script>
-    const billItemsBody = document.getElementById('billItems');
-    const billTotalElem = document.getElementById('billTotal');
-    const payBtn = document.getElementById('payBtn');
+  <p id="emptyMsg" style="display:none;">No food items ordered yet.</p>
+
+<script>
+  function formatPrice(num) {
+    return '₹' + num;
+  }
+
+  function loadCart() {
+    const cartStr = localStorage.getItem('foodCart');
+    if (!cartStr) return null;
+    try {
+      return JSON.parse(cartStr);
+    } catch {
+      return null;
+    }
+  }
+
+  function renderBill(cart) {
+    const tbody = document.querySelector('#billTable tbody');
     const emptyMsg = document.getElementById('emptyMsg');
+    const totalElem = document.getElementById('totalAmount');
 
-    // Load food cart and room total from localStorage
-    let foodCart = JSON.parse(localStorage.getItem('foodCart') || '{}');
-    let roomTotal = parseFloat(localStorage.getItem('roomTotal') || 0);
-    let roomName = localStorage.getItem('roomName') || '';
-
-    // Helper format price
-    function formatPrice(price) {
-      return `₹${price.toFixed(2)}`;
+    tbody.innerHTML = '';
+    if (!cart || Object.keys(cart).length === 0) {
+      document.getElementById('billTable').style.display = 'none';
+      emptyMsg.style.display = 'block';
+      return;
     }
 
-    function renderBill() {
-      billItemsBody.innerHTML = '';
-      let total = 0;
-      let hasItems = false;
+    document.getElementById('billTable').style.display = 'table';
+    emptyMsg.style.display = 'none';
 
-      // Add room if booked
-      if(roomTotal > 0 && roomName) {
-        hasItems = true;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${roomName} (Room)</td>
-          <td>1</td>
-          <td class="price">${formatPrice(roomTotal)}</td>
-        `;
-        billItemsBody.appendChild(tr);
-        total += roomTotal;
-      }
+    let total = 0;
+    for (const [item, details] of Object.entries(cart)) {
+      const subtotal = details.price * details.qty;
+      total += subtotal;
 
-      // Add food items
-      for(const itemName in foodCart) {
-        if(foodCart.hasOwnProperty(itemName)) {
-          const item = foodCart[itemName];
-          if(item.qty > 0) {
-            hasItems = true;
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-              <td>${itemName}</td>
-              <td>${item.qty}</td>
-              <td class="price">${formatPrice(item.price * item.qty)}</td>
-            `;
-            billItemsBody.appendChild(tr);
-            total += item.price * item.qty;
-          }
-        }
-      }
-
-      if(!hasItems) {
-        emptyMsg.style.display = 'block';
-        payBtn.style.display = 'none';
-        billItemsBody.innerHTML = '';
-        billTotalElem.textContent = '₹0';
-      } else {
-        emptyMsg.style.display = 'none';
-        payBtn.style.display = 'block';
-        billTotalElem.textContent = formatPrice(total);
-      }
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item}</td>
+        <td class="qty">${details.qty}</td>
+        <td class="price">${formatPrice(details.price)}</td>
+        <td class="subtotal">${formatPrice(subtotal)}</td>
+      `;
+      tbody.appendChild(tr);
     }
+    totalElem.textContent = formatPrice(total);
+  }
 
-    payBtn.addEventListener('click', () => {
-      alert('Payment functionality coming soon! 🎉');
-    });
+  const cart = loadCart();
+  renderBill(cart);
+</script>
 
-    renderBill();
-  </script>
 </body>
 </html>
