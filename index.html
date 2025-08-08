@@ -4,14 +4,13 @@
 <meta charset="UTF-8">
 <title>Buddy's Hotel - Home</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-    /* ===== Base Styling ===== */
     body {
         margin: 0;
-        font-family: 'Orbitron', sans-serif;
+        font-family: 'Poppins', sans-serif;
         color: #fff;
         height: 100vh;
         display: flex;
@@ -23,7 +22,7 @@
         position: relative;
     }
 
-    /* ===== Aurora Background ===== */
+    /* Aurora Background */
     .aurora {
         position: absolute;
         width: 200%;
@@ -42,45 +41,44 @@
         100% { transform: translate(-5%, -15%) rotate(-20deg); }
     }
 
-    /* ===== Floating Particles ===== */
-    .particle {
+    /* Floating Hotel Icons */
+    .hotel-icon {
         position: absolute;
-        width: 6px;
-        height: 6px;
-        background: rgba(255,255,255,0.8);
-        border-radius: 50%;
-        animation: floatParticles 15s linear infinite;
+        width: 50px;
+        height: 50px;
+        animation: floatIcon linear infinite;
+        opacity: 0.85;
         z-index: 1;
     }
 
-    @keyframes floatParticles {
-        from { transform: translateY(100vh) scale(0.5); opacity: 0; }
-        50% { opacity: 1; }
-        to { transform: translateY(-10vh) scale(1); opacity: 0; }
+    .hotel-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 
-    /* ===== Animated Title ===== */
+    @keyframes floatIcon {
+        0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+        10% { opacity: 0.8; }
+        90% { opacity: 0.8; }
+        100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Animated Title */
     h1 {
         font-size: 3rem;
         margin-bottom: 30px;
-        display: inline-block;
-        white-space: nowrap;
-        overflow: hidden;
-        border-right: 4px solid rgba(255,255,255,0.75);
-        animation: typing 3s steps(30) 1, blink 0.75s step-end infinite alternate;
         z-index: 2;
+        text-shadow: 0 0 20px #00ffc8;
+        animation: fadeInTitle 2s ease forwards;
     }
 
-    @keyframes typing {
-        from { width: 0; }
-        to { width: 100%; }
-    }
-    @keyframes blink {
-        from { border-color: transparent; }
-        to { border-color: white; }
+    @keyframes fadeInTitle {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== Glassmorphism Menu ===== */
+    /* Menu */
     .menu {
         background: rgba(255,255,255,0.1);
         backdrop-filter: blur(10px);
@@ -119,7 +117,6 @@
         box-shadow: 0 0 30px white;
     }
 
-    /* ===== Mobile Friendly ===== */
     @media (max-width: 600px) {
         h1 { font-size: 2rem; }
         .menu { width: 80%; }
@@ -131,22 +128,27 @@
 <!-- Aurora Background -->
 <div class="aurora"></div>
 
-<!-- Floating Particles -->
+<!-- Floating Icons Script -->
 <script>
-for (let i = 0; i < 30; i++) {
-    let p = document.createElement("div");
-    p.className = "particle";
-    p.style.left = Math.random() * 100 + "vw";
-    p.style.animationDuration = 10 + Math.random() * 10 + "s";
-    p.style.animationDelay = Math.random() * 5 + "s";
-    document.body.appendChild(p);
+for (let i = 0; i < 10; i++) {
+    let icon = document.createElement("div");
+    icon.className = "hotel-icon";
+
+    let img = document.createElement("img");
+    img.src = "hotel_logo.png"; // <-- Change to your logo filename
+    icon.style.left = Math.random() * 100 + "vw";
+    icon.style.animationDuration = (8 + Math.random() * 5) + "s";
+    icon.style.animationDelay = (Math.random() * 5) + "s";
+
+    icon.appendChild(img);
+    document.body.appendChild(icon);
 }
 </script>
 
 <!-- Page Title -->
 <h1>🏨 Buddy's Hotel</h1>
 
-<!-- Glassmorphism Menu -->
+<!-- Menu -->
 <div class="menu">
     <a href="booking.html"><i class="fas fa-bed"></i> Book a Room</a>
     <a href="food.html"><i class="fas fa-utensils"></i> Order Food</a>
@@ -168,4 +170,3 @@ document.querySelectorAll('.menu a').forEach(link => {
 
 </body>
 </html>
-
