@@ -3,305 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <title>Buddy's Hotel - Order Food</title>
-  <!-- Montserrat font -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
   <style>
-    /* Reset & base */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
     body {
       background: linear-gradient(135deg, #000, #111);
       color: #fff;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Orbitron', sans-serif;
       margin: 0;
       padding: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
+
     h1 {
-      margin: 1rem 0;
+      text-align: center;
+      padding: 20px;
       font-size: 3rem;
-      font-weight: 600;
       text-shadow: 0 0 20px cyan;
       user-select: none;
     }
-    /* Search bar */
-    #searchBar {
-      width: 90%;
-      max-width: 480px;
-      padding: 12px 20px;
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-      border-radius: 30px;
-      border: none;
-      outline: none;
-      box-shadow: 0 0 15px cyan;
-      background-color: rgba(255 255 255 / 0.05);
-      color: #fff;
-      transition: box-shadow 0.3s;
-    }
-    #searchBar::placeholder {
-      color: #bbb;
-    }
-    #searchBar:focus {
-      box-shadow: 0 0 30px cyan;
-      background-color: rgba(255 255 255 / 0.12);
-    }
-    /* Container for food items + cart */
-    .main-content {
+
+    .food-container {
       display: flex;
-      gap: 20px;
-      width: 95%;
-      max-width: 1200px;
-      padding-bottom: 2rem;
       flex-wrap: wrap;
       justify-content: center;
-    }
-    /* Food container */
-    .food-container {
-      flex: 1 1 700px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 20px;
-      padding: 0 10px;
+      padding: 20px;
     }
-    /* Food item card */
+
     .food-item {
-      background: rgba(255 255 255 / 0.05);
+      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
       border-radius: 15px;
+      width: 250px;
       text-align: center;
       padding: 15px;
-      box-shadow: 0 0 15px rgba(0,255,255,0.3);
-      transition: transform 0.3s, box-shadow 0.3s;
-      position: relative;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+      transition: 0.3s;
       user-select: none;
     }
+
     .food-item:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(0,255,255,0.7);
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
     }
+
     .food-item img {
       width: 100%;
       height: 160px;
       border-radius: 10px;
       object-fit: cover;
-      margin-bottom: 10px;
-      user-select: none;
     }
-    .food-item h3 {
-      margin: 0.5rem 0 0.25rem;
-      font-weight: 600;
-      font-size: 1.2rem;
-    }
-    .food-item p.price {
-      margin: 0 0 1rem;
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: #0ff;
-      user-select: text;
-    }
-    /* Veg / Non-veg icon */
-    .food-item .icon {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      width: 24px;
-      height: 24px;
-    }
-    .veg {
-      border-radius: 50%;
-      background-color: #4caf50;
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid #fff;
-      margin-right: 6px;
-      vertical-align: middle;
-    }
-    .nonveg {
-      width: 16px;
-      height: 16px;
-      margin-right: 6px;
-      vertical-align: middle;
-    }
-    /* Quantity input */
-    .qty-label {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-      font-weight: 600;
-      user-select: none;
-    }
-    input.qty {
-      width: 50px;
-      padding: 6px;
-      border-radius: 8px;
-      border: none;
-      text-align: center;
-      font-weight: 600;
-      font-size: 1rem;
-      outline: none;
-      background: rgba(255 255 255 / 0.1);
-      color: #0ff;
-      transition: box-shadow 0.3s;
-    }
-    input.qty:focus {
-      box-shadow: 0 0 8px cyan;
-      background: rgba(255 255 255 / 0.15);
-    }
-    /* Add button */
-    button.add-btn {
-      background: linear-gradient(90deg, #00fff7, #ff00de);
+
+    button {
+      background: linear-gradient(90deg, red, blue, green);
       border: none;
       padding: 10px 20px;
       color: white;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
+      font-family: 'Orbitron', sans-serif;
       font-size: 1rem;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: transform 0.25s, box-shadow 0.3s;
+      transition: 0.3s;
+      margin-top: 10px;
       user-select: none;
     }
-    button.add-btn:hover {
+
+    button:hover {
       transform: scale(1.1);
-      box-shadow: 0 0 20px cyan;
-    }
-    /* Cart panel */
-    .cart-panel {
-      flex: 0 0 320px;
-      background: rgba(255 255 255 / 0.07);
-      backdrop-filter: blur(15px);
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 0 25px cyan;
-      display: flex;
-      flex-direction: column;
-      max-height: 600px;
-      overflow-y: auto;
-      position: sticky;
-      top: 20px;
-    }
-    .cart-panel h2 {
-      margin: 0 0 15px;
-      font-weight: 600;
-      color: #00ffc8;
-      text-align: center;
-      user-select: none;
-    }
-    .cart-items {
-      flex-grow: 1;
-      overflow-y: auto;
-      user-select: none;
-    }
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      border-bottom: 1px solid rgba(0,255,255,0.2);
-      padding-bottom: 5px;
-      user-select: text;
-    }
-    .cart-item-name {
-      font-weight: 600;
-      color: #0ff;
-      flex: 1;
-    }
-    .cart-item-qty {
-      margin: 0 10px;
-      font-weight: 600;
-      color: #0ff;
-      user-select: text;
-    }
-    .cart-item-price {
-      font-weight: 600;
-      color: #0ff;
-      min-width: 55px;
-      text-align: right;
-      user-select: text;
-    }
-    .cart-total {
-      font-weight: 700;
-      font-size: 1.3rem;
-      text-align: center;
-      margin-top: 20px;
-      border-top: 2px solid #0ff;
-      padding-top: 10px;
-      color: #00ffc8;
-      user-select: none;
-    }
-    /* Modal styles */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      justify-content: center;
-      align-items: center;
-      z-index: 1500;
-    }
-    .modal-overlay.active {
-      display: flex;
-      animation: fadeInModal 0.3s ease forwards;
-    }
-    @keyframes fadeInModal {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-    .modal {
-      background: #111;
-      padding: 30px 35px;
-      border-radius: 15px;
-      max-width: 320px;
-      box-shadow: 0 0 30px #00ffc8;
-      text-align: center;
-      color: #00ffc8;
-      user-select: none;
-    }
-    .modal h2 {
-      margin-bottom: 15px;
-    }
-    .modal p {
-      white-space: pre-line;
-      font-weight: 600;
-    }
-    .modal button {
-      margin-top: 25px;
-      background: #00ffc8;
-      color: #000;
-      border: none;
-      padding: 12px 30px;
-      font-weight: 700;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.3s;
-      user-select: none;
-    }
-    .modal button:hover {
-      background: #00bfa5;
-    }
-    /* Responsive */
-    @media (max-width: 900px) {
-      .main-content {
-        flex-direction: column;
-        align-items: center;
-      }
-      .cart-panel {
-        width: 90%;
-        max-height: none;
-        position: static;
-        margin-top: 30px;
-      }
-      .food-container {
-        width: 100%;
-      }
+      box-shadow: 0 0 20px white;
     }
   </style>
 </head>
@@ -309,184 +77,107 @@
 
   <h1>🍽 Order Your Food</h1>
 
-  <input 
-    type="search" 
-    id="searchBar" 
-    aria-label="Search food items" 
-    placeholder="Search food items..." 
-  />
+  <div class="food-container">
 
-  <main class="main-content" role="main">
-
-    <section class="food-container" aria-label="Food menu">
-      <!-- Food items injected by JS -->
-    </section>
-
-    <aside class="cart-panel" aria-label="Order cart summary" role="region" aria-live="polite" aria-atomic="true">
-      <h2>Your Cart</h2>
-      <div class="cart-items" id="cartItems">
-        <p>Your cart is empty.</p>
-      </div>
-      <div class="cart-total" id="cartTotal" aria-live="polite" aria-atomic="true">
-        Total: ₹0
-      </div>
-    </aside>
-
-  </main>
-
-  <!-- Modal -->
-  <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
-    <div class="modal">
-      <h2 id="modalTitle">Item Added to Cart!</h2>
-      <p id="modalDesc"></p>
-      <button id="closeModal" aria-label="Close confirmation modal">Close</button>
+    <div class="food-item">
+      <img src="burger.jpg" alt="Burger" />
+      <h3>Burger</h3>
+      <p>₹150</p>
+      <button onclick="addToCart('Burger', 150, 1)">Add to Order</button>
     </div>
+
+    <div class="food-item">
+      <img src="pizza.jpg" alt="Pizza" />
+      <h3>Pizza</h3>
+      <p>₹250</p>
+      <button onclick="addToCart('Pizza', 250, 1)">Add to Order</button>
+    </div>
+
+    <div class="food-item">
+      <img src="pasta.jpg" alt="Pasta" />
+      <h3>Pasta</h3>
+      <p>₹200</p>
+      <button onclick="addToCart('Pasta', 200, 1)">Add to Order</button>
+    </div>
+
+    <div class="food-item">
+      <img src="dhosa.jpg" alt="Dhosa" />
+      <h3>Dhosa</h3>
+      <p>₹130</p>
+      <button onclick="addToCart('Dhosa', 130, 1)">Add to Order</button>
+    </div>
+
+    <div class="food-item">
+      <img src="chole.jpg" alt="Chole Kulche" />
+      <h3>Chole Kulche</h3>
+      <p>₹80</p>
+      <button onclick="addToCart('Chole Kulche', 80, 1)">Add to Order</button>
+    </div>
+
+    <div class="food-item">
+      <img src="samosa.jpg" alt="Samosa" />
+      <h3>Samosa</h3>
+      <p>₹20</p>
+      <button onclick="addToCart('Samosa', 20, 1)">Add to Order</button>
+    </div>
+
+    <div class="food-item">
+      <img src="paneer.jpg" alt="Matar Paneer" />
+      <h3>Matar Paneer</h3>
+      <p>₹150</p>
+      <button onclick="addToCart('Matar Paneer', 150, 1)">Add to Order</button>
+    </div>
+
+    <div class="food-item">
+      <img src="nonveg.jpg" alt="Asha's Special" />
+      <h3>Asha's Special</h3>
+      <p>₹200</p>
+      <button onclick="addToCart('Asha Special', 200, 1)">Add to Order</button>
+    </div>
+
+    <div class="food-item">
+      <img src="biryani.jpg" alt="Pathan's Special" />
+      <h3>Pathan's Special</h3>
+      <p>₹80</p>
+      <button onclick="addToCart('Pathan Special', 80, 1)">Add to Order</button>
+    </div>
+
+    <div class="food-item">
+      <img src="cola.jpg" alt="Cola" />
+      <h3>Cola</h3>
+      <p>₹10</p>
+      <button onclick="addToCart('Cola', 10, 1)">Add to Order</button>
+    </div>
+
   </div>
 
-<script>
-  // Food data with veg/nonveg flag and image alt text
-  const foods = [
-    { name: 'Burger', price: 150, img: 'burger.jpg', veg: false, alt: 'Burger' },
-    { name: 'Pizza', price: 250, img: 'pizza.jpg', veg: true, alt: 'Pizza' },
-    { name: 'Pasta', price: 200, img: 'pasta.jpg', veg: true, alt: 'Pasta' },
-    { name: 'Dhosa', price: 130, img: 'dhosa.jpg', veg: true, alt: 'Dhosa' },
-    { name: 'Chole Kulche', price: 80, img: 'chole.jpg', veg: true, alt: 'Chole Kulche' },
-    { name: 'Samosa', price: 20, img: 'samosa.jpg', veg: true, alt: 'Samosa' },
-    { name: 'Matar Paneer', price: 150, img: 'paneer.jpg', veg: true, alt: 'Matar Paneer' },
-    { name: 'Asha Special', price: 200, img: 'nonveg.jpg', veg: false, alt: "Asha's Special" },
-    { name: "Pathan Special", price: 80, img: 'biryani.jpg', veg: false, alt: "Pathan's Special" },
-    { name: 'Cola', price: 10, img: 'cola.jpg', veg: true, alt: 'Cola' }
-  ];
+  <script>
+    // Cart object will store items as { itemName: { price, qty } }
+    let cart = {};
 
-  const foodContainer = document.querySelector('.food-container');
-  const cartItemsContainer = document.getElementById('cartItems');
-  const cartTotalElem = document.getElementById('cartTotal');
-  const modal = document.getElementById('modal');
-  const modalDesc = document.getElementById('modalDesc');
-  const closeModalBtn = document.getElementById('closeModal');
-  const searchBar = document.getElementById('searchBar');
+    // On load, restore cart from localStorage if available
+    window.onload = function () {
+      const savedCart = localStorage.getItem('foodCart');
+      if (savedCart) {
+        cart = JSON.parse(savedCart);
+      }
+    };
 
-  let cart = {};
+    function addToCart(name, price, qty) {
+      if (cart[name]) {
+        cart[name].qty += qty;
+      } else {
+        cart[name] = { price: price, qty: qty };
+      }
 
-  // Helper: format price
-  function formatPrice(price) {
-    return `₹${price}`;
-  }
-
-  // Render food items filtered by search
-  function renderFoodItems(filter = '') {
-    foodContainer.innerHTML = '';
-    const filteredFoods = foods.filter(f => f.name.toLowerCase().includes(filter.toLowerCase()));
-    if(filteredFoods.length === 0) {
-      foodContainer.innerHTML = '<p style="color:#888; text-align:center; width:100%;">No matching food items found.</p>';
-      return;
+      localStorage.setItem('foodCart', JSON.stringify(cart));
+      alert(`✅ Added ${qty} x ${name} to your order.\nCurrent total items: ${getTotalQty()}`);
     }
-    filteredFoods.forEach(food => {
-      const item = document.createElement('article');
-      item.className = 'food-item';
-      item.setAttribute('tabindex', '0');
-      item.setAttribute('aria-label', `${food.name}, price ${formatPrice(food.price)}, ${food.veg ? 'vegetarian' : 'non vegetarian'}`);
 
-      item.innerHTML = `
-        <img src="${food.img}" alt="${food.alt}" loading="lazy" />
-        <h3>${food.name}</h3>
-        <p class="price">${formatPrice(food.price)}</p>
-        <label class="qty-label" for="qty-${food.name.replace(/\s+/g, '')}">Quantity:
-          <input
-            type="number"
-            id="qty-${food.name.replace(/\s+/g, '')}"
-            class="qty"
-            min="1"
-            value="1"
-            aria-live="polite"
-            aria-atomic="true"
-            aria-label="Quantity for ${food.name}"
-          />
-          <span class="${food.veg ? 'veg' : 'nonveg'}" title="${food.veg ? 'Vegetarian' : 'Non Vegetarian'}" aria-hidden="true"></span>
-        </label>
-        <button class="add-btn" aria-label="Add ${food.name} to order">Add to Order</button>
-      `;
-
-      const qtyInput = item.querySelector('.qty');
-      const addBtn = item.querySelector('button');
-
-      addBtn.addEventListener('click', () => {
-        let qty = parseInt(qtyInput.value);
-        if (isNaN(qty) || qty < 1) {
-          qty = 1;
-          qtyInput.value = 1;
-        }
-        addToCart(food.name, food.price, qty);
-      });
-
-      foodContainer.appendChild(item);
-    });
-  }
-
-  // Add to cart function
-  function addToCart(name, price, qty) {
-    if(cart[name]) {
-      cart[name].qty += qty;
-    } else {
-      cart[name] = { price, qty };
+    function getTotalQty() {
+      return Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
     }
-    updateCartUI();
-    showModal(`${qty} x ${name} added to cart!\nSubtotal: ${formatPrice(price * qty)}`);
-  }
-
-  // Update cart UI
-  function updateCartUI() {
-    cartItemsContainer.innerHTML = '';
-    const keys = Object.keys(cart);
-    if(keys.length === 0) {
-      cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
-      cartTotalElem.textContent = 'Total: ₹0';
-      return;
-    }
-    let total = 0;
-    keys.forEach(name => {
-      const item = cart[name];
-      const itemTotal = item.price * item.qty;
-      total += itemTotal;
-
-      const cartItem = document.createElement('div');
-      cartItem.className = 'cart-item';
-      cartItem.setAttribute('tabindex', '0');
-      cartItem.innerHTML = `
-        <span class="cart-item-name">${name}</span>
-        <span class="cart-item-qty">x${item.qty}</span>
-        <span class="cart-item-price">${formatPrice(itemTotal)}</span>
-      `;
-      cartItemsContainer.appendChild(cartItem);
-    });
-    cartTotalElem.textContent = `Total: ${formatPrice(total)}`;
-  }
-
-  // Modal functions
-  function showModal(message) {
-    modalDesc.textContent = message;
-    modal.classList.add('active');
-  }
-  function hideModal() {
-    modal.classList.remove('active');
-  }
-  closeModalBtn.addEventListener('click', hideModal);
-  modal.addEventListener('click', (e) => {
-    if(e.target === modal) hideModal();
-  });
-  document.addEventListener('keydown', e => {
-    if(e.key === 'Escape' && modal.classList.contains('active')) hideModal();
-  });
-
-  // Search filter
-  searchBar.addEventListener('input', e => {
-    renderFoodItems(e.target.value);
-  });
-
-  // Initial render
-  renderFoodItems();
-  updateCartUI();
-</script>
+  </script>
 
 </body>
 </html>
