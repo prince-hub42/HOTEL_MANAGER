@@ -237,6 +237,21 @@
       color: #00ffc8;
       user-select: none;
     }
+    <button id="saveCartBtn" style="
+  margin-top: 15px;
+  padding: 10px 20px;
+  width: 100%;
+  background: linear-gradient(90deg, #00fff7, #ff00de);
+  border: none;
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: box-shadow 0.3s;
+">Proceed to Bill & Pay</button>
+
     /* Modal styles */
     .modal-overlay {
       display: none;
@@ -490,3 +505,16 @@
 
 </body>
 </html>
+const saveCartBtn = document.getElementById('saveCartBtn');
+
+saveCartBtn.addEventListener('click', () => {
+  if (Object.keys(cart).length === 0) {
+    alert('Your cart is empty. Please add some food items before proceeding.');
+    return;
+  }
+  // Save the entire cart object in localStorage as JSON string
+  localStorage.setItem('foodCart', JSON.stringify(cart));
+  // Redirect to bill.html
+  window.location.href = 'bill.html';
+});
+
