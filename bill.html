@@ -5,163 +5,79 @@
 <title>Bill & Payment - Prince Hotel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
     body {
-        margin: 0;
         font-family: 'Orbitron', sans-serif;
-        color: #fff;
-        background: linear-gradient(270deg, red, blue, green, purple);
-        background-size: 800% 800%;
-        animation: backgroundShift 12s ease infinite;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-    }
-    @keyframes backgroundShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    body::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        border: 6px solid transparent;
-        border-radius: 15px;
-        background: linear-gradient(90deg, red, blue, green, purple);
-        background-size: 400% 400%;
-        animation: borderGlow 8s linear infinite;
-        z-index: 1;
-        pointer-events: none;
-    }
-    @keyframes borderGlow {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    .particle {
-        position: absolute;
-        width: 6px;
-        height: 6px;
-        background: rgba(255,255,255,0.8);
-        border-radius: 50%;
-        animation: floatParticles 15s linear infinite;
-    }
-    @keyframes floatParticles {
-        from { transform: translateY(100vh) scale(0.5); opacity: 0; }
-        50% { opacity: 1; }
-        to { transform: translateY(-10vh) scale(1); opacity: 0; }
-    }
-    .container {
-        background: rgba(255,255,255,0.1);
-        backdrop-filter: blur(10px);
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 0 30px rgba(0,0,0,0.5);
-        z-index: 2;
-        width: 90%;
-        max-width: 450px;
+        background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        color: white;
         text-align: center;
+        padding: 30px;
     }
     h1 {
-        margin-bottom: 20px;
-        font-size: 2rem;
+        margin-bottom: 30px;
     }
-    .bill-details {
-        background: rgba(255,255,255,0.15);
-        padding: 15px;
+    table {
+        width: 60%;
+        margin: auto;
+        border-collapse: collapse;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
         border-radius: 10px;
-        text-align: left;
-        margin-bottom: 20px;
+        overflow: hidden;
     }
-    .bill-details p {
-        font-size: 1.1rem;
-        margin: 8px 0;
+    th, td {
+        padding: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    th {
+        background: rgba(0,0,0,0.3);
     }
     .total {
-        font-size: 1.3rem;
-        font-weight: bold;
-        margin-top: 10px;
-    }
-    .qr-code {
+        font-size: 1.5rem;
         margin-top: 20px;
+        color: #00ffb3;
     }
-    .qr-code img {
+    img.qr {
+        margin-top: 20px;
         width: 200px;
-        height: 200px;
         border-radius: 10px;
-        box-shadow: 0 0 25px white;
-    }
-    button {
-        margin-top: 20px;
-        width: 100%;
-        padding: 12px;
-        border: none;
-        border-radius: 8px;
-        background: linear-gradient(90deg, red, blue, green);
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        animation: buttonGlow 3s infinite alternate;
-        transition: 0.3s;
-    }
-    @keyframes buttonGlow {
-        from { box-shadow: 0 0 15px red; }
-        to { box-shadow: 0 0 30px cyan; }
-    }
-    button:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 40px white;
+        box-shadow: 0 0 15px #00ffb3;
     }
 </style>
 </head>
 <body>
 
-<script>
-for (let i = 0; i < 30; i++) {
-    let p = document.createElement("div");
-    p.className = "particle";
-    p.style.left = Math.random() * 100 + "vw";
-    p.style.animationDuration = 10 + Math.random() * 10 + "s";
-    p.style.animationDelay = Math.random() * 5 + "s";
-    document.body.appendChild(p);
-}
-</script>
+<h1>💳 Your Bill</h1>
 
-<div class="container">
-    <h1><i class="fas fa-receipt"></i> Your Bill</h1>
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Amount (₹)</th>
+    </tr>
+    <tr>
+        <td>Room Booking</td>
+        <td id="roomPrice">0</td>
+    </tr>
+    <tr>
+        <td>Food Order</td>
+        <td id="foodPrice">0</td>
+    </tr>
+</table>
 
-    <div class="bill-details">
-        <p>Room Charges: ₹<span id="roomTotal">0</span></p>
-        <p>Food Charges: ₹<span id="foodTotal">0</span></p>
-        <p class="total">Grand Total: ₹<span id="grandTotal">0</span></p>
-    </div>
+<div class="total">Total: ₹<span id="totalAmount">0</span></div>
 
-    <div class="qr-code">
-        <h3>Scan to Pay</h3>
-        <img src="myqr.png.jpg" alt="QR Code">
-    </div>
-
-    <button onclick="confirmPayment()">Confirm Payment</button>
-</div>
+<h2>Scan & Pay</h2>
+<img class="qr" src="myqr.png.jpg" alt="QR Code">
 
 <script>
-const roomTotal = parseInt(localStorage.getItem('roomTotal')) || 0;
-const foodTotal = parseInt(localStorage.getItem('foodTotal')) || 0;
-const grandTotal = roomTotal + foodTotal;
+    let roomTotal = parseInt(localStorage.getItem("roomTotal")) || 0;
+    let foodTotal = parseInt(localStorage.getItem("foodTotal")) || 0;
 
-document.getElementById('roomTotal').textContent = roomTotal;
-document.getElementById('foodTotal').textContent = foodTotal;
-document.getElementById('grandTotal').textContent = grandTotal;
+    document.getElementById("roomPrice").innerText = roomTotal;
+    document.getElementById("foodPrice").innerText = foodTotal;
 
-function confirmPayment() {
-    alert(`✅ Payment of ₹${grandTotal} successful!`);
-    localStorage.clear();
-    window.location.href = "index.html";
-}
+    let totalAmount = roomTotal + foodTotal;
+    document.getElementById("totalAmount").innerText = totalAmount;
 </script>
 
 </body>
