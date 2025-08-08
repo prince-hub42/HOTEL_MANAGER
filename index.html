@@ -1,48 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Prince Hotel - Home</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-  <style>
+<meta charset="UTF-8">
+<title>Prince Hotel - Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    /* ===== Base Styling ===== */
     body {
-      background-color: #000;
-      color: #fff;
-      font-family: 'Orbitron', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
+        margin: 0;
+        font-family: 'Orbitron', sans-serif;
+        color: #fff;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: linear-gradient(270deg, red, blue, green, purple);
+        background-size: 800% 800%;
+        animation: backgroundShift 12s ease infinite;
+        overflow: hidden;
+        position: relative;
     }
+
+    @keyframes backgroundShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* ===== RGB Border Lighting ===== */
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        border: 6px solid transparent;
+        border-radius: 15px;
+        background: linear-gradient(90deg, red, blue, green, purple);
+        background-size: 400% 400%;
+        animation: borderGlow 8s linear infinite;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    @keyframes borderGlow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* ===== Floating Particles ===== */
+    .particle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: rgba(255,255,255,0.8);
+        border-radius: 50%;
+        animation: floatParticles 15s linear infinite;
+    }
+
+    @keyframes floatParticles {
+        from { transform: translateY(100vh) scale(0.5); opacity: 0; }
+        50% { opacity: 1; }
+        to { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* ===== Animated Title ===== */
     h1 {
-      font-size: 3rem;
-      animation: glow 2s infinite alternate;
+        font-size: 3rem;
+        margin-bottom: 30px;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 4px solid rgba(255,255,255,0.75);
+        animation: typing 3s steps(30) 1, blink 0.75s step-end infinite alternate;
+        z-index: 2;
     }
-    a {
-      text-decoration: none;
-      color: white;
-      margin: 15px;
-      padding: 15px 30px;
-      background: linear-gradient(90deg, red, blue, green);
-      border-radius: 12px;
-      box-shadow: 0 0 15px cyan;
-      transition: 0.3s;
+
+    @keyframes typing {
+        from { width: 0; }
+        to { width: 100%; }
     }
-    a:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 25px white;
+    @keyframes blink {
+        from { border-color: transparent; }
+        to { border-color: white; }
     }
-    @keyframes glow {
-      from { text-shadow: 0 0 10px red; }
-      to { text-shadow: 0 0 20px green; }
+
+    /* ===== Glassmorphism Menu ===== */
+    .menu {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        z-index: 2;
+        animation: fadeIn 1s ease forwards;
+        opacity: 0;
     }
-  </style>
+
+    @keyframes fadeIn {
+        to { opacity: 1; }
+    }
+
+    .menu a {
+        text-decoration: none;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #ff0000, #0000ff, #00ff00);
+        background-size: 300% 300%;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: 0.4s;
+        animation: buttonGlow 3s infinite alternate;
+    }
+
+    @keyframes buttonGlow {
+        from { box-shadow: 0 0 15px red; }
+        to { box-shadow: 0 0 30px cyan; }
+    }
+
+    .menu a:hover {
+        transform: scale(1.1);
+        background-position: right center;
+        box-shadow: 0 0 40px white;
+    }
+
+    /* ===== Mobile Friendly ===== */
+    @media (max-width: 600px) {
+        h1 { font-size: 2rem; }
+        .menu { width: 80%; }
+    }
+</style>
 </head>
 <body>
-  <h1>Welcome to Prince Hotel</h1>
-  <a href="booking.html">Book a Room</a>
-  <a href="food.html">Order Food</a>
-  <a href="bill.html">View Bill & Pay</a>
+
+<!-- Floating Particles -->
+<script>
+for (let i = 0; i < 30; i++) {
+    let p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = 10 + Math.random() * 10 + "s";
+    p.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(p);
+}
+</script>
+
+<!-- Page Title -->
+<h1>🏨 Welcome to Prince Hotel</h1>
+
+<!-- Glassmorphism Menu -->
+<div class="menu">
+    <a href="booking.html"><i class="fas fa-bed"></i> Book a Room</a>
+    <a href="food.html"><i class="fas fa-utensils"></i> Order Food</a>
+    <a href="bill.html"><i class="fas fa-credit-card"></i> View Bill & Pay</a>
+</div>
+
+<!-- Smooth Page Transition -->
+<script>
+document.querySelectorAll('.menu a').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.body.style.opacity = 0;
+        setTimeout(() => {
+            window.location.href = this.href;
+        }, 500);
+    });
+});
+</script>
+
 </body>
 </html>
