@@ -1,268 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>Buddy's Hotel - Home</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
-
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 <style>
-    body {
-        margin: 0;
-        font-family: 'Poppins', sans-serif;
-        background-color: #111;
-        color: #fff;
-        line-height: 1.6;
-    }
+  body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background-color: #111;
+    color: #fff;
+    line-height: 1.6;
+  }
 
-    /* Navbar */
+  /* Navbar */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    z-index: 1000;
+  }
+  nav img {
+    height: 40px;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  nav a:hover {
+    color: #ffd700;
+  }
+
+  /* Hamburger */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 6px;
+  }
+  .hamburger div {
+    width: 25px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+  }
+
+  /* Mobile menu panel */
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100vh;
+    background: #222;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: right 0.3s ease-in-out;
+    z-index: 1100;
+  }
+  .mobile-menu.open {
+    right: 0;
+  }
+  .mobile-menu a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 30px;
+    border-bottom: 1px solid #444;
+    transition: background 0.3s;
+  }
+  .mobile-menu a:hover {
+    background: #444;
+  }
+
+  /* Hero Section */
+  .hero {
+    height: 100vh;
+    background: url("hotel_bg.png") center/cover no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 60px;
+    padding-top: 60px; /* to avoid navbar overlap */
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .hero-content {
+    position: relative;
+    max-width: 600px;
+    z-index: 2;
+  }
+  .hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #ffd700;
+  }
+  .hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: #ffd700;
+    color: #000;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  .btn-primary:hover {
+    background: #e6c200;
+  }
+
+  /* Sections */
+  section {
+    padding: 60px 50px;
+  }
+  .about,
+  .services,
+  .testimonials {
+    max-width: 1100px;
+    margin: auto;
+  }
+  .about-content {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .about img {
+    max-width: 500px;
+    border-radius: 10px;
+  }
+
+  /* Services */
+  .service-cards {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 10px;
+    flex: 1 1 300px;
+    text-align: center;
+    transition: transform 0.3s;
+    cursor: pointer;
+  }
+  .card i {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #ffd700;
+  }
+  .card:hover {
+    transform: translateY(-10px);
+  }
+
+  /* Testimonials */
+  .testimonial {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .stars {
+    color: #ffd700;
+    margin-bottom: 10px;
+  }
+
+  /* Footer */
+  footer {
+    background: #000;
+    padding: 30px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
     nav {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 50px;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(10px);
-        z-index: 1000;
-    }
-    nav img {
-        height: 40px;
+      padding: 15px 20px;
     }
     nav ul {
-        list-style: none;
-        display: flex;
-        gap: 25px;
-        margin: 0;
-        padding: 0;
-        flex-wrap: wrap;
+      display: none;
     }
-    nav a {
-        color: white;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s;
-    }
-    nav a:hover {
-        color: #FFD700;
-    }
-
-    /* Hero Section */
-    .hero {
-        height: 100vh;
-        background: url('hotel_bg.png') center/cover no-repeat;
-        position: relative;
-        display: flex;
-        align-items: center;
-        padding-left: 60px;
-    }
-    .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.6);
-    }
-    .hero-content {
-        position: relative;
-        max-width: 600px;
-        z-index: 2;
+    .hamburger {
+      display: flex;
     }
     .hero-content h1 {
-        font-size: 3rem;
-        margin-bottom: 20px;
-        color: #FFD700;
+      font-size: 2.2rem;
     }
-    .hero-content p {
-        font-size: 1.2rem;
-        margin-bottom: 30px;
-    }
-    .btn-primary {
-        display: inline-block;
-        background: #FFD700;
-        color: #000;
-        padding: 12px 25px;
-        border-radius: 5px;
-        font-weight: bold;
-        text-decoration: none;
-        transition: background 0.3s;
-    }
-    .btn-primary:hover {
-        background: #e6c200;
-    }
-
-    /* Sections */
     section {
-        padding: 60px 50px;
-    }
-    .about, .services, .testimonials {
-        max-width: 1100px;
-        margin: auto;
+      padding: 40px 20px;
     }
     .about-content {
-        display: flex;
-        gap: 40px;
-        align-items: center;
-        flex-wrap: wrap;
+      flex-direction: column;
     }
     .about img {
-        max-width: 500px;
-        border-radius: 10px;
+      max-width: 100%;
+      margin-bottom: 20px;
     }
-
-    /* Services */
-    .service-cards {
-        display: flex;
-        gap: 30px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .card {
-        background: rgba(255,255,255,0.05);
-        padding: 30px;
-        border-radius: 10px;
-        flex: 1 1 300px;
-        text-align: center;
-        transition: transform 0.3s;
-        cursor: pointer;
-    }
-    .card i {
-        font-size: 2rem;
-        margin-bottom: 15px;
-        color: #FFD700;
-    }
-    .card:hover {
-        transform: translateY(-10px);
-    }
-
-    /* Testimonials */
-    .testimonial {
-        background: rgba(255,255,255,0.05);
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-    .stars {
-        color: #FFD700;
-        margin-bottom: 10px;
-    }
-
-    /* Footer */
-    footer {
-        background: #000;
-        padding: 30px;
-        text-align: center;
-        font-size: 0.9rem;
-    }
-
-    /* Responsive */
-    @media(max-width: 768px) {
-        .hero-content h1 {
-            font-size: 2.2rem;
-        }
-        nav {
-            padding: 15px 20px;
-        }
-        section {
-            padding: 40px 20px;
-        }
-        .about-content {
-            flex-direction: column;
-        }
-        .about img {
-            max-width: 100%;
-            margin-bottom: 20px;
-        }
-    }
+  }
 </style>
 </head>
 <body>
-
-<!-- Navbar -->
 <nav>
-    <img src="hotel_logo.png" alt="Buddy's Hotel Logo">
-    <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="booking.html">Book a Room</a></li>
-        <li><a href="food.html">Order Food</a></li>
-        <li><a href="bill.html">View Bill & Pay</a></li>
-        <li><a href="#contact">Contact</a></li>
-    </ul>
+  <img src="hotel_logo.png" alt="Buddy's Hotel Logo" />
+  <div class="hamburger" id="hamburger" aria-label="Toggle menu" tabindex="0" role="button">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="booking.html">Book a Room</a></li>
+    <li><a href="food.html">Order Food</a></li>
+    <li><a href="bill.html">View Bill & Pay</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <a href="#">Home</a>
+  <a href="#about">About</a>
+  <a href="#services">Services</a>
+  <a href="booking.html">Book a Room</a>
+  <a href="food.html">Order Food</a>
+  <a href="bill.html">View Bill & Pay</a>
+  <a href="#contact">Contact</a>
+</div>
 
 <!-- Hero -->
 <section class="hero">
-    <div class="hero-content" data-aos="fade-right">
-        <h1>Welcome to Buddy's Hotel</h1>
-        <p>Experience luxury and comfort like never before. Book your stay with us today.</p>
-        <a href="booking.html" class="btn-primary">Book Now</a>
-    </div>
+  <div class="hero-content" data-aos="fade-right">
+    <h1>Welcome to Buddy's Hotel</h1>
+    <p>Experience luxury and comfort like never before. Book your stay with us today.</p>
+    <a href="booking.html" class="btn-primary">Book Now</a>
+  </div>
 </section>
 
 <!-- About -->
 <section id="about" class="about">
-    <div class="about-content" data-aos="fade-up">
-        <img src="hotel_logo.png" alt="About Buddy's Hotel">
-        <div>
-            <h2>About Us</h2>
-            <p>Buddy's Hotel offers a world-class experience in hospitality, blending comfort, elegance, and exceptional service. Whether you're here for business or leisure, we promise an unforgettable stay.</p>
-        </div>
+  <div class="about-content" data-aos="fade-up">
+    <img src="about_hotel.jpg" alt="About Buddy's Hotel" />
+    <div>
+      <h2>About Us</h2>
+      <p>
+        Buddy's Hotel offers a world-class experience in hospitality, blending comfort, elegance, and exceptional
+        service. Whether you're here for business or leisure, we promise an unforgettable stay.
+      </p>
     </div>
+  </div>
 </section>
 
 <!-- Services -->
 <section id="services" class="services">
-    <h2 data-aos="fade-up">Our Services</h2>
-    <div class="service-cards">
-        <a href="booking.html" class="card" data-aos="fade-up" data-aos-delay="100" style="text-decoration:none; color: inherit;">
-            <i class="fas fa-bed"></i>
-            <h3>Room Booking</h3>
-            <p>Luxurious rooms with top-notch amenities for your perfect stay.</p>
-        </a>
-        <a href="food.html" class="card" data-aos="fade-up" data-aos-delay="200" style="text-decoration:none; color: inherit;">
-            <i class="fas fa-utensils"></i>
-            <h3>Dining</h3>
-            <p>Delicious meals prepared by our world-class chefs.</p>
-        </a>
-        <a href="bill.html" class="card" data-aos="fade-up" data-aos-delay="300" style="text-decoration:none; color: inherit;">
-            <i class="fas fa-credit-card"></i>
-            <h3>Bill Payment</h3>
-            <p>Secure and quick bill payments for your convenience.</p>
-        </a>
-    </div>
+  <h2 data-aos="fade-up">Our Services</h2>
+  <div class="service-cards">
+    <a href="booking.html" class="card" data-aos="fade-up" data-aos-delay="100" style="text-decoration: none; color: inherit;">
+      <i class="fas fa-bed"></i>
+      <h3>Room Booking</h3>
+      <p>Luxurious rooms with top-notch amenities for your perfect stay.</p>
+    </a>
+    <a href="food.html" class="card" data-aos="fade-up" data-aos-delay="200" style="text-decoration: none; color: inherit;">
+      <i class="fas fa-utensils"></i>
+      <h3>Dining</h3>
+      <p>Delicious meals prepared by our world-class chefs.</p>
+    </a>
+    <a href="bill.html" class="card" data-aos="fade-up" data-aos-delay="300" style="text-decoration: none; color: inherit;">
+      <i class="fas fa-credit-card"></i>
+      <h3>Bill Payment</h3>
+      <p>Secure and quick bill payments for your convenience.</p>
+    </a>
+  </div>
 </section>
 
 <!-- Testimonials -->
 <section class="testimonials">
-    <h2 data-aos="fade-up">What Our Guests Say</h2>
-    <div class="testimonial" data-aos="fade-up">
-        <div class="stars">★★★★★</div>
-        <p>"An unforgettable experience! The rooms were pristine and the staff was incredibly friendly."</p>
-        <small>- Sarah M.</small>
-    </div>
-    <div class="testimonial" data-aos="fade-up" data-aos-delay="100">
-        <div class="stars">★★★★★</div>
-        <p>"The food was amazing and the ambiance was perfect. Highly recommend!"</p>
-        <small>- James L.</small>
-    </div>
+  <h2 data-aos="fade-up">What Our Guests Say</h2>
+  <div class="testimonial" data-aos="fade-up">
+    <div class="stars">★★★★★</div>
+    <p>"An unforgettable experience! The rooms were pristine and the staff was incredibly friendly."</p>
+    <small>- Sarah M.</small>
+  </div>
+  <div class="testimonial" data-aos="fade-up" data-aos-delay="100">
+    <div class="stars">★★★★★</div>
+    <p>"The food was amazing and the ambiance was perfect. Highly recommend!"</p>
+    <small>- James L.</small>
+  </div>
 </section>
 
 <!-- Footer -->
 <footer id="contact">
-    <p>📍 123 Luxury Street, City, Country</p>
-    <p>📞 +1 234 567 890 | ✉ contact@buddyshotel.com</p>
-    <p>&copy; 2025 Buddy's Hotel. All rights reserved.</p>
+  <p>📍 123 Luxury Street, City, Country</p>
+  <p>📞 +1 234 567 890 | ✉ contact@buddyshotel.com</p>
+  <p>&copy; 2025 Buddy's Hotel. All rights reserved.</p>
 </footer>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    AOS.init({ duration: 1000 });
-</script>
+  AOS.init({ duration: 1000 });
 
+  const hamburger = document.getElementById("hamburger");
+  const mobileMenu = document.getElementById("mobileMenu");
+
+  function toggleMenu() {
+    mobileMenu.classList.toggle("open");
+    const expanded = hamburger.getAttribute("aria-expanded") === "true" || false;
+    hamburger.setAttribute("aria-expanded", !expanded);
+    mobileMenu.setAttribute("aria-hidden", expanded);
+  }
+
+  hamburger.addEventListener("click", toggleMenu);
+  hamburger.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleMenu();
+    }
+  });
+
+  // Close mobile menu when clicking a link
+  mobileMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileMenu.classList.remove("open");
+      hamburger.setAttribute("aria-expanded", false);
+      mobileMenu.setAttribute("aria-hidden", true);
+    });
+  });
+</script>
 </body>
 </html>
