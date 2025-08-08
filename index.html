@@ -2,229 +2,241 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Buddy's Hotel - Home</title>
+<title>Buddy's Cafe & Hotel - Home</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
 
 <style>
     body {
         margin: 0;
         font-family: 'Poppins', sans-serif;
+        background-color: #111;
         color: #fff;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        background: #000;
-        overflow: hidden;
-        position: relative;
+        line-height: 1.6;
     }
 
-    /* Aurora Background */
-    .aurora {
-        position: absolute;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle at 20% 30%, rgba(0,255,200,0.4), transparent 70%),
-                    radial-gradient(circle at 80% 40%, rgba(0,150,255,0.4), transparent 70%),
-                    radial-gradient(circle at 50% 80%, rgba(255,0,200,0.4), transparent 70%);
-        animation: auroraMove 15s ease-in-out infinite alternate;
-        filter: blur(80px);
-        z-index: 0;
-    }
-
-    @keyframes auroraMove {
-        0% { transform: translate(-10%, -10%) rotate(0deg) scale(1); }
-        50% { transform: translate(10%, 10%) rotate(180deg) scale(1.05); }
-        100% { transform: translate(-5%, -15%) rotate(360deg) scale(1); }
-    }
-
-    /* Floating Hotel Icons */
-    .hotel-icon {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        animation: floatIcon linear infinite;
-        opacity: 0.85;
-        z-index: 1;
-    }
-
-    .hotel-icon img {
+    /* Navbar */
+    nav {
+        position: fixed;
+        top: 0;
         width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
-
-    @keyframes floatIcon {
-        0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-        10% { opacity: 0.8; }
-        90% { opacity: 0.8; }
-        100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-    }
-
-    /* Stars */
-    .star {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: white;
-        border-radius: 50%;
-        animation: starFloat linear infinite;
-    }
-
-    @keyframes starFloat {
-        0% { transform: translateY(0px); opacity: 1; }
-        100% { transform: translateY(-50px); opacity: 0; }
-    }
-
-    /* Animated Title */
-    h1 {
-        font-size: 3rem;
-        margin-bottom: 30px;
-        z-index: 2;
-        text-shadow: 0 0 20px #00ffc8;
-        animation: fadeInTitle 2s ease forwards, glowPulse 3s infinite alternate;
-    }
-
-    @keyframes fadeInTitle {
-        from { opacity: 0; transform: translateY(-20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes glowPulse {
-        0% { text-shadow: 0 0 10px #00ffc8, 0 0 20px #00ffc8; }
-        100% { text-shadow: 0 0 25px #ff00c8, 0 0 50px #ff00c8; }
-    }
-
-    /* Menu */
-    .menu {
-        background: rgba(255,255,255,0.1);
-        backdrop-filter: blur(10px);
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 0 30px rgba(0,0,0,0.5);
         display: flex;
-        flex-direction: column;
-        gap: 15px;
-        z-index: 2;
-        animation: fadeIn 1s ease forwards, menuFloat 4s ease-in-out infinite;
-        opacity: 0;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 50px;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
     }
-
-    @keyframes fadeIn {
-        to { opacity: 1; }
+    nav img {
+        height: 40px;
     }
-
-    @keyframes menuFloat {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
+    nav ul {
+        list-style: none;
+        display: flex;
+        gap: 25px;
+        margin: 0;
+        padding: 0;
     }
-
-    .menu a {
-        position: relative;
-        text-decoration: none;
+    nav a {
         color: white;
-        padding: 15px 25px;
-        border-radius: 10px;
-        background: linear-gradient(90deg, #00ffc8, #007bff, #ff00c8);
-        background-size: 300% 300%;
-        font-weight: bold;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+    nav a:hover {
+        color: #FFD700;
+    }
+
+    /* Hero Section */
+    .hero {
+        height: 100vh;
+        background: url('hotel_bg.png') center/cover no-repeat;
+        position: relative;
         display: flex;
         align-items: center;
-        gap: 10px;
-        transition: 0.4s;
-        overflow: hidden;
+        padding-left: 60px;
     }
-
-    .menu a:hover {
-        transform: scale(1.1);
-        background-position: right center;
-        box-shadow: 0 0 30px white;
-    }
-
-    /* Sparkle effect */
-    .menu a::after {
-        content: '';
+    .hero::after {
+        content: "";
         position: absolute;
-        width: 120%;
-        height: 120%;
-        background: rgba(255,255,255,0.4);
-        top: -50%;
-        left: -50%;
-        transform: rotate(45deg);
-        transition: all 0.5s;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+    }
+    .hero-content {
+        position: relative;
+        max-width: 600px;
+        z-index: 2;
+    }
+    .hero-content h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: #FFD700;
+    }
+    .hero-content p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+    .btn-primary {
+        display: inline-block;
+        background: #FFD700;
+        color: #000;
+        padding: 12px 25px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: background 0.3s;
+    }
+    .btn-primary:hover {
+        background: #e6c200;
     }
 
-    .menu a:hover::after {
-        left: 100%;
-        top: 100%;
+    /* Sections */
+    section {
+        padding: 60px 50px;
+    }
+    .about, .services, .testimonials {
+        max-width: 1100px;
+        margin: auto;
+    }
+    .about-content {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .about img {
+        max-width: 500px;
+        border-radius: 10px;
     }
 
-    @media (max-width: 600px) {
-        h1 { font-size: 2rem; }
-        .menu { width: 80%; }
+    /* Services */
+    .service-cards {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .card {
+        background: rgba(255,255,255,0.05);
+        padding: 30px;
+        border-radius: 10px;
+        flex: 1 1 300px;
+        text-align: center;
+        transition: transform 0.3s;
+    }
+    .card i {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: #FFD700;
+    }
+    .card:hover {
+        transform: translateY(-10px);
+    }
+
+    /* Testimonials */
+    .testimonial {
+        background: rgba(255,255,255,0.05);
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .stars {
+        color: #FFD700;
+        margin-bottom: 10px;
+    }
+
+    /* Footer */
+    footer {
+        background: #000;
+        padding: 30px;
+        text-align: center;
+        font-size: 0.9rem;
     }
 </style>
 </head>
 <body>
 
-<!-- Aurora Background -->
-<div class="aurora"></div>
+<!-- Navbar -->
+<nav>
+    <img src="hotel_logo.png" alt="Buddy's Hotel Logo">
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
 
-<!-- Floating Icons Script -->
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-content" data-aos="fade-right">
+        <h1>Welcome to Buddy's Cafe</h1>
+        <p>Experience luxury and comfort like never before. Book your stay with us today.</p>
+        <a href="booking.html" class="btn-primary">Book Now</a>
+    </div>
+</section>
+
+<!-- About -->
+<section id="about" class="about">
+    <div class="about-content" data-aos="fade-up">
+        <img src="about_hotel.jpg" alt="About Buddy's Hotel">
+        <div>
+            <h2>About Us</h2>
+            <p>Buddy's Cafe offers a world-class experience in hospitality, blending comfort, elegance, and exceptional service. Whether you're here for business or leisure, we promise an unforgettable stay.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="services">
+    <h2 data-aos="fade-up">Our Services</h2>
+    <div class="service-cards">
+        <div class="card" data-aos="fade-up" data-aos-delay="100">
+            <i class="fas fa-bed"></i>
+            <h3>Room Booking</h3>
+            <p>Luxurious rooms with top-notch amenities for your perfect stay.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="200">
+            <i class="fas fa-utensils"></i>
+            <h3>Dining</h3>
+            <p>Delicious meals prepared by our world-class chefs.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="300">
+            <i class="fas fa-credit-card"></i>
+            <h3>Bill Payment</h3>
+            <p>Secure and quick bill payments for your convenience.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials">
+    <h2 data-aos="fade-up">What Our Guests Say</h2>
+    <div class="testimonial" data-aos="fade-up">
+        <div class="stars">★★★★★</div>
+        <p>"An unforgettable experience! The rooms were pristine and the staff was incredibly friendly."</p>
+        <small>- Sarah M.</small>
+    </div>
+    <div class="testimonial" data-aos="fade-up" data-aos-delay="100">
+        <div class="stars">★★★★★</div>
+        <p>"The food was amazing and the ambiance was perfect. Highly recommend!"</p>
+        <small>- James L.</small>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer id="contact">
+    <p>📍 123 Luxury Street, City, Country</p>
+    <p>📞 +1 234 567 890 | ✉ contact@buddyshotel.com</p>
+    <p>&copy; 2025 Buddy's Cafe. All rights reserved.</p>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-for (let i = 0; i < 10; i++) {
-    let icon = document.createElement("div");
-    icon.className = "hotel-icon";
-
-    let img = document.createElement("img");
-    img.src = "hotel_logo.png"; // Change to your logo filename
-    icon.style.left = Math.random() * 100 + "vw";
-    icon.style.animationDuration = (8 + Math.random() * 5) + "s";
-    icon.style.animationDelay = (Math.random() * 5) + "s";
-
-    icon.appendChild(img);
-    document.body.appendChild(icon);
-}
-
-// Stars
-for (let i = 0; i < 20; i++) {
-    let star = document.createElement("div");
-    star.className = "star";
-    star.style.left = Math.random() * 100 + "vw";
-    star.style.top = Math.random() * 100 + "vh";
-    star.style.opacity = Math.random();
-    star.style.animationDuration = (5 + Math.random() * 10) + "s";
-    document.body.appendChild(star);
-}
-</script>
-
-<!-- Page Title with Logo -->
-<h1>
-    <img src="hotel_logo.png" alt="Buddy's Hotel Logo" style="height:50px; vertical-align:middle; margin-right:10px;">
-    Buddy's Hotel
-</h1>
-
-<!-- Menu -->
-<div class="menu">
-    <a href="booking.html"><i class="fas fa-bed"></i> Book a Room</a>
-    <a href="food.html"><i class="fas fa-utensils"></i> Order Food</a>
-    <a href="bill.html"><i class="fas fa-credit-card"></i> View Bill & Pay</a>
-</div>
-
-<!-- Smooth Page Transition -->
-<script>
-document.querySelectorAll('.menu a').forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.body.style.opacity = 0;
-        setTimeout(() => {
-            window.location.href = this.href;
-        }, 500);
-    });
-});
+    AOS.init({ duration: 1000 });
 </script>
 
 </body>
