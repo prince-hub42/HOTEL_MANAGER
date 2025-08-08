@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+    /* ===== Base Styling ===== */
     body {
         margin: 0;
         font-family: 'Orbitron', sans-serif;
@@ -17,43 +18,31 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        background: linear-gradient(270deg, red, blue, green, purple);
-        background-size: 800% 800%;
-        animation: backgroundShift 12s ease infinite;
+        background: #000;
         overflow: hidden;
         position: relative;
-        opacity: 0;
-        transition: opacity 0.8s ease;
     }
 
-    @keyframes backgroundShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    body.loaded { opacity: 1; }
-
-    body::before {
-        content: "";
+    /* ===== Aurora Background ===== */
+    .aurora {
         position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        border: 6px solid transparent;
-        border-radius: 15px;
-        background: linear-gradient(90deg, red, blue, green, purple);
-        background-size: 400% 400%;
-        animation: borderGlow 8s linear infinite;
-        z-index: 1;
-        pointer-events: none;
-        transition: box-shadow 0.3s ease;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at 20% 30%, rgba(0,255,200,0.4), transparent 70%),
+                    radial-gradient(circle at 80% 40%, rgba(0,150,255,0.4), transparent 70%),
+                    radial-gradient(circle at 50% 80%, rgba(255,0,200,0.4), transparent 70%);
+        animation: auroraMove 15s ease-in-out infinite alternate;
+        filter: blur(80px);
+        z-index: 0;
     }
 
-    @keyframes borderGlow {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+    @keyframes auroraMove {
+        0% { transform: translate(-10%, -10%) rotate(0deg); }
+        50% { transform: translate(10%, 10%) rotate(20deg); }
+        100% { transform: translate(-5%, -15%) rotate(-20deg); }
     }
 
+    /* ===== Floating Particles ===== */
     .particle {
         position: absolute;
         width: 6px;
@@ -61,6 +50,7 @@
         background: rgba(255,255,255,0.8);
         border-radius: 50%;
         animation: floatParticles 15s linear infinite;
+        z-index: 1;
     }
 
     @keyframes floatParticles {
@@ -69,6 +59,7 @@
         to { transform: translateY(-10vh) scale(1); opacity: 0; }
     }
 
+    /* ===== Animated Title ===== */
     h1 {
         font-size: 3rem;
         margin-bottom: 30px;
@@ -80,9 +71,16 @@
         z-index: 2;
     }
 
-    @keyframes typing { from { width: 0; } to { width: 100%; } }
-    @keyframes blink { from { border-color: transparent; } to { border-color: white; } }
+    @keyframes typing {
+        from { width: 0; }
+        to { width: 100%; }
+    }
+    @keyframes blink {
+        from { border-color: transparent; }
+        to { border-color: white; }
+    }
 
+    /* ===== Glassmorphism Menu ===== */
     .menu {
         background: rgba(255,255,255,0.1);
         backdrop-filter: blur(10px);
@@ -97,34 +95,31 @@
         opacity: 0;
     }
 
-    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes fadeIn {
+        to { opacity: 1; }
+    }
 
     .menu a {
         text-decoration: none;
         color: white;
         padding: 15px 25px;
         border-radius: 10px;
-        background: linear-gradient(90deg, #ff0000, #0000ff, #00ff00);
+        background: linear-gradient(90deg, #00ffc8, #007bff, #ff00c8);
         background-size: 300% 300%;
         font-weight: bold;
         display: flex;
         align-items: center;
         gap: 10px;
         transition: 0.4s;
-        animation: buttonGlow 3s infinite alternate;
-    }
-
-    @keyframes buttonGlow {
-        from { box-shadow: 0 0 15px red; }
-        to { box-shadow: 0 0 30px cyan; }
     }
 
     .menu a:hover {
         transform: scale(1.1);
         background-position: right center;
-        box-shadow: 0 0 40px white;
+        box-shadow: 0 0 30px white;
     }
 
+    /* ===== Mobile Friendly ===== */
     @media (max-width: 600px) {
         h1 { font-size: 2rem; }
         .menu { width: 80%; }
@@ -133,8 +128,11 @@
 </head>
 <body>
 
+<!-- Aurora Background -->
+<div class="aurora"></div>
+
+<!-- Floating Particles -->
 <script>
-// Create floating particles
 for (let i = 0; i < 30; i++) {
     let p = document.createElement("div");
     p.className = "particle";
@@ -143,40 +141,20 @@ for (let i = 0; i < 30; i++) {
     p.style.animationDelay = Math.random() * 5 + "s";
     document.body.appendChild(p);
 }
-
-// Fade in page
-window.addEventListener("load", () => {
-    document.body.classList.add("loaded");
-});
-
-// Mouse reactive particles
-document.addEventListener("mousemove", e => {
-    document.querySelectorAll(".particle").forEach(p => {
-        let speed = 0.02;
-        p.style.transform = `translate(${(e.clientX - window.innerWidth/2) * speed}px, ${(e.clientY - window.innerHeight/2) * speed}px)`;
-    });
-});
-
-// Border pulse on click
-document.addEventListener("click", () => {
-    document.body.style.setProperty("--pulse", "1");
-    document.body.classList.add("pulse");
-    document.body.querySelector("body::before");
-    document.querySelector("body").style.boxShadow = "0 0 40px white";
-    setTimeout(() => document.querySelector("body").style.boxShadow = "", 300);
-});
 </script>
 
+<!-- Page Title -->
 <h1>🏨 Welcome to Prince Hotel</h1>
 
+<!-- Glassmorphism Menu -->
 <div class="menu">
     <a href="booking.html"><i class="fas fa-bed"></i> Book a Room</a>
     <a href="food.html"><i class="fas fa-utensils"></i> Order Food</a>
     <a href="bill.html"><i class="fas fa-credit-card"></i> View Bill & Pay</a>
 </div>
 
+<!-- Smooth Page Transition -->
 <script>
-// Smooth page transition
 document.querySelectorAll('.menu a').forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();
@@ -190,3 +168,4 @@ document.querySelectorAll('.menu a').forEach(link => {
 
 </body>
 </html>
+
