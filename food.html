@@ -237,21 +237,24 @@
       color: #00ffc8;
       user-select: none;
     }
-    <button id="saveCartBtn" style="
-  margin-top: 15px;
-  padding: 10px 20px;
-  width: 100%;
-  background: linear-gradient(90deg, #00fff7, #ff00de);
-  border: none;
-  color: white;
-  font-weight: 700;
-  font-size: 1.1rem;
-  border-radius: 12px;
-  cursor: pointer;
-  user-select: none;
-  transition: box-shadow 0.3s;
-">Proceed to Bill & Pay</button>
-
+    /* Proceed button */
+    #saveCartBtn {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #000;
+      background: linear-gradient(90deg, #00ffc8, #007bff);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s;
+    }
+    #saveCartBtn:hover {
+      background: linear-gradient(90deg, #007bff, #00ffc8);
+    }
     /* Modal styles */
     .modal-overlay {
       display: none;
@@ -345,6 +348,7 @@
       <div class="cart-total" id="cartTotal" aria-live="polite" aria-atomic="true">
         Total: ₹0
       </div>
+      <button id="saveCartBtn" aria-label="Proceed to Bill and Pay">Proceed to Bill &amp; Pay</button>
     </aside>
 
   </main>
@@ -380,6 +384,7 @@
   const modalDesc = document.getElementById('modalDesc');
   const closeModalBtn = document.getElementById('closeModal');
   const searchBar = document.getElementById('searchBar');
+  const saveCartBtn = document.getElementById('saveCartBtn');
 
   let cart = {};
 
@@ -498,6 +503,18 @@
     renderFoodItems(e.target.value);
   });
 
+  // Save cart & proceed button
+  saveCartBtn.addEventListener('click', () => {
+    if (Object.keys(cart).length === 0) {
+      alert('Your cart is empty. Please add some food items before proceeding.');
+      return;
+    }
+    // Save the entire cart object in localStorage as JSON string
+    localStorage.setItem('foodCart', JSON.stringify(cart));
+    // Redirect to bill.html
+    window.location.href = 'bill.html';
+  });
+
   // Initial render
   renderFoodItems();
   updateCartUI();
@@ -505,16 +522,3 @@
 
 </body>
 </html>
-const saveCartBtn = document.getElementById('saveCartBtn');
-
-saveCartBtn.addEventListener('click', () => {
-  if (Object.keys(cart).length === 0) {
-    alert('Your cart is empty. Please add some food items before proceeding.');
-    return;
-  }
-  // Save the entire cart object in localStorage as JSON string
-  localStorage.setItem('foodCart', JSON.stringify(cart));
-  // Redirect to bill.html
-  window.location.href = 'bill.html';
-});
-
