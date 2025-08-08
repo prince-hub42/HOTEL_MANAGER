@@ -11,59 +11,106 @@
         font-family: 'Orbitron', sans-serif;
         color: white;
         background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        padding: 20px;
     }
     header {
         text-align: center;
-        padding: 20px;
         font-size: 2rem;
         font-weight: bold;
-        background: rgba(255, 255, 255, 0.1);
+        margin-bottom: 30px;
     }
-    .booking {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 40px;
+    .room-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
     }
-    select, button {
+    .room-card {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(15px);
+        border-radius: 15px;
+        overflow: hidden;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(0,255,200,0.2);
+        transition: transform 0.3s;
+    }
+    .room-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 25px rgba(255,255,255,0.5);
+    }
+    .room-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+    .room-info {
+        padding: 15px;
+    }
+    .room-info h2 {
+        font-size: 1.2rem;
+        margin: 10px 0;
+    }
+    .room-info p {
+        margin: 5px 0;
+        font-size: 1rem;
+    }
+    .book-btn {
         padding: 10px;
         font-size: 1rem;
         margin-top: 10px;
         border-radius: 8px;
         border: none;
-    }
-    button {
         background: linear-gradient(90deg, #ff4e50, #f9d423);
         color: white;
         cursor: pointer;
+        width: 100%;
+        transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .book-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px white;
     }
 </style>
 </head>
 <body>
 
-<header>🏨 Book a Room - Prince Hotel</header>
+<header>🏨 Book Your Stay at Prince Hotel</header>
 
-<div class="booking">
-    <label for="roomType">Choose Room Type:</label>
-    <select id="roomType">
-        <option value="0">-- Select --</option>
-        <option value="1500">Deluxe Room - ₹1500/night</option>
-        <option value="3000">Luxury Suite - ₹3000/night</option>
-        <option value="5000">Presidential Suite - ₹5000/night</option>
-    </select>
-    <button onclick="bookRoom()">Book Room</button>
+<div class="room-container">
+
+    <div class="room-card">
+        <img src="room1.jpg" alt="Deluxe Room">
+        <div class="room-info">
+            <h2>Deluxe Room</h2>
+            <p>₹1500/night</p>
+            <button class="book-btn" onclick="bookRoom(1500, 'Deluxe Room')">Book Now</button>
+        </div>
+    </div>
+
+    <div class="room-card">
+        <img src="room2.jpg" alt="Luxury Suite">
+        <div class="room-info">
+            <h2>Luxury Suite</h2>
+            <p>₹3000/night</p>
+            <button class="book-btn" onclick="bookRoom(3000, 'Luxury Suite')">Book Now</button>
+        </div>
+    </div>
+
+    <div class="room-card">
+        <img src="room3.jpg" alt="Presidential Suite">
+        <div class="room-info">
+            <h2>Presidential Suite</h2>
+            <p>₹5000/night</p>
+            <button class="book-btn" onclick="bookRoom(5000, 'Presidential Suite')">Book Now</button>
+        </div>
+    </div>
+
 </div>
 
 <script>
-function bookRoom() {
-    let roomPrice = parseInt(document.getElementById("roomType").value);
-    
-    if (roomPrice > 0) {
-        localStorage.setItem("roomTotal", roomPrice); // store for bill.html
-        alert("Room booked successfully! Price: ₹" + roomPrice);
-    } else {
-        alert("Please select a valid room type.");
-    }
+function bookRoom(price, name) {
+    localStorage.setItem("roomTotal", price);
+    localStorage.setItem("roomName", name);
+    alert("✅ " + name + " booked successfully!\nPrice: ₹" + price);
 }
 </script>
 
