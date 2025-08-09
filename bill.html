@@ -2,135 +2,156 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Buddy's Hotel - Final Bill</title>
+  <title>Bill Summary</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: "Poppins", sans-serif;
       margin: 0;
-      background: linear-gradient(135deg, #f0f0f0, #e6e6e6);
       padding: 20px;
+      background: #f4f4f4;
     }
     h1 {
       text-align: center;
       color: #333;
-      margin-bottom: 20px;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin: 20px 0;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     th, td {
       padding: 12px;
+      border-bottom: 1px solid #ddd;
       text-align: left;
     }
     th {
       background: #007BFF;
       color: white;
     }
-    tr:nth-child(even) {
-      background: #f9f9f9;
-    }
-    .total-row td {
-      font-weight: bold;
+    .total {
+      text-align: right;
       font-size: 1.2em;
-    }
-    .center {
-      text-align: center;
-    }
-    .btn {
-      display: inline-block;
       margin-top: 20px;
-      padding: 10px 20px;
-      background: #007BFF;
-      color: white;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-      text-align: center;
+      background: #fff;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    .btn:hover {
-      background: #0056b3;
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: darkred;
     }
   </style>
 </head>
 <body>
 
-<h1>Final Bill</h1>
+  <h1>Bill Summary</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Item</th>
-      <th>Qty</th>
-      <th>Price</th>
-      <th>Subtotal</th>
-    </tr>
-  </thead>
-  <tbody id="billBody">
-  </tbody>
-  <tfoot>
-    <tr class="total-row">
-      <td colspan="3" class="center">Total</td>
-      <td id="totalAmount">₹0</td>
-    </tr>
-  </tfoot>
-</table>
+  <!-- Room Booking Table -->
+  <h2>Room Booking</h2>
+  <table id="roomTable">
+    <thead>
+      <tr>
+        <th>Room Type</th>
+        <th>Nights</th>
+        <th>Price/Night</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-<div class="center">
-  <a href="index.html" class="btn">Back to Home</a>
-</div>
+  <!-- Food Order Table -->
+  <h2>Food Order</h2>
+  <table id="foodTable">
+    <thead>
+      <tr>
+        <th>Food Item</th>
+        <th>Quantity</th>
+        <th>Price Each</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-<script>
-  function loadData(key) {
-    const str = localStorage.getItem(key);
-    if (!str) return null;
-    try { return JSON.parse(str); } catch { return null; }
-  }
+  <!-- Grand Total -->
+  <div class="total" id="grandTotal">Grand Total: ₹0</div>
 
-  const tbody = document.getElementById('billBody');
-  let total = 0;
+  <button onclick="clearData()">Clear All Data</button>
 
-  // Load Room Booking
-  const booking = loadData('roomBooking');
-  if (booking) {
-    const roomSubtotal = booking.pricePerNight * booking.nights;
-    total += roomSubtotal;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${booking.roomType} (${booking.nights} nights)</td>
-      <td>1</td>
-      <td>₹${booking.pricePerNight}</td>
-      <td>₹${roomSubtotal}</td>
-    `;
-    tbody.appendChild(tr);
-  }
+  <script>
+    function loadBill() {
+      let grandTotal = 0;
 
-  // Load Food Cart
-  const cart = loadData('foodCart');
-  if (cart) {
-    Object.keys(cart).forEach(itemName => {
-      const { price, quantity } = cart[itemName];
-      const subtotal = price * quantity;
-      total += subtotal;
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${itemName}</td>
-        <td>${quantity}</td>
-        <td>₹${price}</td>
-        <td>₹${subtotal}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
+      // --- ROOM BOOKING ---
+      const roomBooking = JSON.parse(localStorage.getItem('roomBooking'));
+      const roomTableBody = document.querySelector('#roomTable tbody');
 
-  // Show total
-  document.getElementById('totalAmount').textContent = `₹${total}`;
-</script>
+      if (roomBooking) {
+        const roomTotal = roomBooking.pricePerNight * roomBooking.nights;
+        grandTotal += roomTotal;
+        roomTableBody.innerHTML = `
+          <tr>
+            <td>${roomBooking.roomType}</td>
+            <td>${roomBooking.nights}</td>
+            <td>₹${roomBooking.pricePerNight}</td>
+            <td>₹${roomTotal}</td>
+          </tr>
+        `;
+      } else {
+        roomTableBody.innerHTML = `<tr><td colspan="4">No room booking data found.</td></tr>`;
+      }
+
+      // --- FOOD ORDER ---
+      const foodCart = JSON.parse(localStorage.getItem('foodCart'));
+      const foodTableBody = document.querySelector('#foodTable tbody');
+
+      if (foodCart && Object.keys(foodCart).length > 0) {
+        let foodTotal = 0;
+        Object.keys(foodCart).forEach(item => {
+          const { price, quantity } = foodCart[item];
+          const itemTotal = price * quantity;
+          foodTotal += itemTotal;
+          foodTableBody.innerHTML += `
+            <tr>
+              <td>${item}</td>
+              <td>${quantity}</td>
+              <td>₹${price}</td>
+              <td>₹${itemTotal}</td>
+            </tr>
+          `;
+        });
+        grandTotal += foodTotal;
+      } else {
+        foodTableBody.innerHTML = `<tr><td colspan="4">No food order data found.</td></tr>`;
+      }
+
+      // Update Grand Total
+      document.getElementById('grandTotal').textContent = `Grand Total: ₹${grandTotal}`;
+    }
+
+    function clearData() {
+      localStorage.removeItem('roomBooking');
+      localStorage.removeItem('foodCart');
+      alert('All data cleared!');
+      location.reload();
+    }
+
+    // Load bill on page load
+    loadBill();
+  </script>
 
 </body>
 </html>
