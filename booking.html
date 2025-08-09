@@ -2,65 +2,99 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Book a Room - Buddy's Hotel</title>
+<title>Book a Room - Buddy's Luxury Hotel</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
-body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
-label {
-  display: block;
-  margin-top: 10px;
-}
-input, select, button {
-  padding: 8px;
-  margin-top: 5px;
-  width: 100%;
-}
-button {
-  background: #4CAF50;
-  color: white;
-  border: none;
-}
-button:hover {
-  background: #45a049;
-}
+    body {
+        margin: 0;
+        font-family: 'Montserrat', sans-serif;
+        background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+        color: white;
+        text-align: center;
+    }
+    header {
+        padding: 20px;
+        background: linear-gradient(90deg, #d4af37, #b8860b);
+        color: black;
+        font-size: 1.8em;
+        font-weight: 700;
+    }
+    form {
+        max-width: 400px;
+        margin: 40px auto;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    }
+    label {
+        display: block;
+        margin: 15px 0 5px;
+        text-align: left;
+    }
+    select, input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 15px;
+    }
+    button {
+        background: #d4af37;
+        color: black;
+        font-size: 1.1em;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #ffcc00;
+    }
 </style>
 </head>
 <body>
-<h1>Room Booking</h1>
+
+<header>Book Your Room</header>
+
 <form id="bookingForm">
-  <label>Room Type</label>
-  <select id="roomName">
-    <option value="Deluxe Room" data-price="1500">Deluxe Room - ₹1500/night</option>
-    <option value="Suite" data-price="2500">Suite - ₹2500/night</option>
-    <option value="Single Room" data-price="1000">Single Room - ₹1000/night</option>
-  </select>
+    <label>Room Type</label>
+    <select id="roomType">
+        <option value="Standard">Standard - ₹2000/night</option>
+        <option value="Deluxe">Deluxe - ₹3500/night</option>
+        <option value="Suite">Suite - ₹5000/night</option>
+    </select>
 
-  <label>Number of Nights</label>
-  <input type="number" id="nights" value="1" min="1">
+    <label>Number of Nights</label>
+    <input type="number" id="nights" min="1" value="1">
 
-  <button type="submit">Book & Go to Bill</button>
+    <button type="submit">Save Booking</button>
 </form>
 
 <script>
-document.getElementById("bookingForm").addEventListener("submit", function (e) {
-    e.preventDefault();
+    document.getElementById("bookingForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        
+        const roomType = document.getElementById("roomType").value;
+        const nights = parseInt(document.getElementById("nights").value);
+        
+        let pricePerNight = 0;
+        if (roomType === "Standard") pricePerNight = 2000;
+        else if (roomType === "Deluxe") pricePerNight = 3500;
+        else if (roomType === "Suite") pricePerNight = 5000;
 
-    const roomSelect = document.getElementById("roomName");
-    const roomName = roomSelect.value;
-    const roomPrice = parseFloat(roomSelect.options[roomSelect.selectedIndex].dataset.price);
-    const roomNights = parseInt(document.getElementById("nights").value) || 1;
+        const totalRoomCost = pricePerNight * nights;
 
-    const roomTotal = roomPrice * roomNights;
+        // Save to localStorage
+        localStorage.setItem("roomType", roomType);
+        localStorage.setItem("roomNights", nights);
+        localStorage.setItem("roomCost", totalRoomCost);
 
-    localStorage.setItem("roomName", roomName);
-    localStorage.setItem("roomNights", roomNights);
-    localStorage.setItem("roomTotal", roomTotal);
-
-    window.location.href = "bill.html";
-});
+        alert("Booking saved! Go to Food Order page now.");
+        window.location.href = "food.html";
+    });
 </script>
+
 </body>
 </html>
