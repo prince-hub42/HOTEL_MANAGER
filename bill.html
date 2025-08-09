@@ -1,133 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Final Bill - Buddy's Hotel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<title>Bill - Buddy's Hotel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  body {
-    font-family: 'Montserrat', sans-serif;
-    margin: 0;
-    padding: 20px;
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    color: white;
-  }
-  h1 {
-    text-align: center;
-    color: #f9d423;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 30px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-  }
-  th {
-    background: rgba(0,0,0,0.5);
-    color: #f9d423;
-  }
-  tfoot td {
-    font-weight: bold;
-    font-size: 1.2rem;
-  }
-  .total {
-    color: #00ffc8;
-  }
-  .btn {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 12px 20px;
-    background: linear-gradient(90deg, #ff4e50, #f9d423);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-  }
-  .btn:hover {
-    box-shadow: 0 0 15px white;
-    transform: scale(1.05);
-  }
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+th {
+  background: #f4f4f4;
+}
+.total {
+  font-weight: bold;
+}
 </style>
 </head>
 <body>
-
 <h1>Final Bill</h1>
-
 <table id="billTable">
-  <thead>
-    <tr>
-      <th>Item</th>
-      <th>Details</th>
-      <th>Price (₹)</th>
-    </tr>
-  </thead>
-  <tbody id="billBody">
-    <!-- Bill rows will be injected here -->
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="2">Grand Total</td>
-      <td class="total" id="grandTotal">₹0</td>
-    </tr>
-  </tfoot>
+  <tr>
+    <th>Item</th>
+    <th>Price</th>
+    <th>Qty</th>
+    <th>Total</th>
+  </tr>
 </table>
-
-<a href="index.html" class="btn">Back to Home</a>
+<h2 id="grandTotal"></h2>
 
 <script>
-  const billBody = document.getElementById('billBody');
-  const grandTotalEl = document.getElementById('grandTotal');
-  let grandTotal = 0;
+const billTable = document.getElementById("billTable");
+let grandTotal = 0;
 
-  // --- Get room booking from localStorage ---
-  const roomName = localStorage.getItem('roomName');
-  const roomNights = localStorage.getItem('roomNights');
-  const roomTotal = parseFloat(localStorage.getItem('roomTotal')) || 0;
+// Room booking details
+const roomName = localStorage.getItem("roomName");
+const roomNights = localStorage.getItem("roomNights");
+const roomTotal = parseFloat(localStorage.getItem("roomTotal")) || 0;
 
-  if (roomName && roomTotal) {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${roomName}</td>
-      <td>${roomNights} night(s)</td>
-      <td>₹${roomTotal}</td>
-    `;
-    billBody.appendChild(row);
+if (roomName && roomTotal) {
+    const row = billTable.insertRow();
+    row.insertCell(0).innerText = `${roomName} (${roomNights} nights)`;
+    row.insertCell(1).innerText = `₹${roomTotal / roomNights}`;
+    row.insertCell(2).innerText = roomNights;
+    row.insertCell(3).innerText = `₹${roomTotal}`;
     grandTotal += roomTotal;
-  }
+}
 
-  // --- Get food cart from localStorage ---
-  const foodCart = JSON.parse(localStorage.getItem('foodCart')) || {};
-  for (let itemName in foodCart) {
-    const item = foodCart[itemName];
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${itemName}</td>
-      <td>${item.quantity} × ₹${item.price}</td>
-      <td>₹${item.price * item.quantity}</td>
-    `;
-    billBody.appendChild(row);
-    grandTotal += item.price * item.quantity;
-  }
+// Food details
+const foodCart = JSON.parse(localStorage.getItem("foodCart")) || {};
+for (let item in foodCart) {
+    const { price, quantity } = foodCart[item];
+    const total = price * quantity;
+    const row = billTable.insertRow();
+    row.insertCell(0).innerText = item;
+    row.insertCell(1).innerText = `₹${price}`;
+    row.insertCell(2).innerText = quantity;
+    row.insertCell(3).innerText = `₹${total}`;
+    grandTotal += total;
+}
 
-  // --- Update grand total ---
-  grandTotalEl.textContent = `₹${grandTotal}`;
-
-  // --- Optional: Clear storage so next bill is fresh ---
-  // localStorage.removeItem('roomName');
-  // localStorage.removeItem('roomNights');
-  // localStorage.removeItem('roomTotal');
-  // localStorage.removeItem('foodCart');
+document.getElementById("grandTotal").innerText = `Grand Total: ₹${grandTotal}`;
 </script>
-
 </body>
 </html>
