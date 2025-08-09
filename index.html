@@ -1,82 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Buddy's Luxury Hotel</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-<style>
-    body {
-        margin: 0;
-        font-family: 'Montserrat', sans-serif;
-        background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
-        color: white;
-        text-align: center;
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Buddy's — Royal Stay</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --navy: #07102a;
+      --deep: #081428;
+      --card: rgba(255,255,255,0.04);
+      --gold: #d4af37;
+      --muted: rgba(255,255,255,0.75);
+      --glass: rgba(255,255,255,0.03);
+      --accent: linear-gradient(90deg, #e9c76b, #d4af37 60%, #b8860b);
     }
-    header {
-        padding: 40px;
-        background: linear-gradient(90deg, #d4af37, #b8860b);
-        color: black;
-        font-size: 2.2em;
-        font-weight: 700;
-        position: relative;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Montserrat', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 400px at 10% 10%, rgba(13,28,57,0.6), transparent),
+                  radial-gradient(800px 300px at 90% 90%, rgba(8,20,40,0.6), transparent),
+                  var(--navy);
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding-bottom:60px;
     }
-    .floating-icon {
-        width: 60px;
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        animation: float 3s ease-in-out infinite;
+
+    /* Header */
+    .topbar{
+      display:flex;
+      align-items:center;
+      gap:20px;
+      padding:18px 28px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.18), transparent);
+      position:sticky;
+      top:0;
+      z-index:40;
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
     }
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
+    .logo-wrap{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      cursor:pointer;
+      text-decoration:none;
+      color:inherit;
     }
+    .logo {
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      overflow:hidden;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+      border: 2px solid rgba(255,255,255,0.04);
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      animation: float 4s ease-in-out infinite;
+    }
+    .logo img{
+      width:84%;
+      height:84%;
+      object-fit:contain;
+      display:block;
+    }
+    .brand {
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+    }
+    .brand .title{
+      font-family: 'Playfair Display', serif;
+      font-size:18px;
+      font-weight:700;
+      color:var(--gold);
+      letter-spacing:0.6px;
+    }
+    .brand .sub{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    /* nav */
+    nav{margin-left:auto; display:flex; gap:12px; align-items:center}
+    .nav-link{
+      color:var(--muted);
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:8px;
+      font-weight:600;
+      transition: all .18s ease;
+    }
+    .nav-link:hover{ color:#fff; background:var(--glass); transform:translateY(-2px)}
+
+    /* hero */
     .hero {
-        background: url('https://images.unsplash.com/photo-1501117716987-c8e1ecb210f6') no-repeat center center/cover;
-        height: 300px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      max-width:1200px;
+      margin:36px auto 18px;
+      padding:36px;
+      border-radius:14px;
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:28px;
+      align-items:center;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)),
+        linear-gradient(120deg, rgba(0,0,0,0.16), transparent);
+      box-shadow: 0 12px 40px rgba(2,8,23,0.6);
+      border: 1px solid rgba(212,175,55,0.06);
     }
-    .hero h1 {
-        background: rgba(0,0,0,0.5);
-        padding: 20px 40px;
-        border-radius: 10px;
-        font-size: 2em;
-        color: #d4af37;
+    .hero-left{
+      padding-right:6px;
     }
-    .btn {
-        display: inline-block;
-        margin: 30px;
-        padding: 15px 30px;
-        font-size: 1.2em;
-        color: black;
-        background: #d4af37;
-        border-radius: 8px;
-        text-decoration: none;
-        transition: 0.3s;
+    .eyebrow{
+      color:var(--gold);
+      font-weight:700;
+      font-size:14px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      margin-bottom:12px;
     }
-    .btn:hover {
-        background: #ffcc00;
-        transform: scale(1.05);
+    h1{
+      font-family:'Playfair Display', serif;
+      font-weight:700;
+      margin:0 0 16px;
+      font-size:40px;
+      color: #fff;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.6);
     }
-</style>
+    p.lead{
+      margin:0 0 20px;
+      color:var(--muted);
+      max-width:60ch;
+    }
+
+    .cta-row{display:flex; gap:12px; flex-wrap:wrap}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 20px;
+      border-radius:10px;
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+      text-decoration:none;
+      box-shadow: 0 8px 20px rgba(2,8,23,0.6);
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+    .btn-primary{
+      background:var(--accent);
+      color:#06101f;
+    }
+    .btn-ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+    }
+    .btn:hover{ transform:translateY(-4px) }
+
+    /* right panel card */
+    .hero-right{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border-radius:12px;
+      padding:18px;
+      color:var(--muted);
+      border:1px solid rgba(212,175,55,0.04);
+    }
+    .quick-card h4{ margin:0 0 8px; color:var(--gold); font-size:16px }
+    .quick-card p{ margin:0 0 12px }
+    .feature-list{ display:flex; gap:10px; flex-direction:column }
+    .feature{
+      background:rgba(255,255,255,0.02);
+      padding:10px;
+      border-radius:8px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .feature strong{ color:#fff }
+
+    /* sections */
+    .section{
+      max-width:1200px;
+      margin:28px auto;
+      padding:22px;
+      border-radius:12px;
+      background:var(--card);
+      border: 1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 30px rgba(2,8,23,0.5);
+    }
+    .grid{display:grid; gap:16px; grid-template-columns: repeat(auto-fit,minmax(220px,1fr));}
+
+    .room-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:14px;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(212,175,55,0.03);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .room-card:hover{ transform: translateY(-8px); box-shadow: 0 18px 40px rgba(3,8,20,0.6) }
+
+    .room-card img{ width:100%; height:140px; object-fit:cover; border-radius:8px; margin-bottom:10px; }
+
+    footer{
+      max-width:1200px;
+      margin:30px auto 60px;
+      color:var(--muted);
+      text-align:center;
+      font-size:14px;
+    }
+
+    @keyframes float {
+      0%,100%{ transform:translateY(0) }
+      50%{ transform:translateY(-8px) }
+    }
+
+    /* responsive */
+    @media (max-width:940px){
+      .hero{ grid-template-columns: 1fr; padding:22px }
+      .hero-right{ order:2 }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    Buddy's Luxury Hotel
-    <img src="https://cdn-icons-png.flaticon.com/512/1146/1146869.png" class="floating-icon" alt="Hotel Icon">
-</header>
+  <!-- Top bar -->
+  <div class="topbar">
+    <a class="logo-wrap" href="index.html" title="Buddy's Home">
+      <div class="logo" aria-hidden="true">
+        <!-- use hotel_logo.jpg (place in same folder) -->
+        <img src="hotel_logo.jpg" alt="Buddy's Logo">
+      </div>
+      <div class="brand">
+        <div class="title">Buddy's</div>
+        <div class="sub">A Royal Stay Experience</div>
+      </div>
+    </a>
 
-<div class="hero">
-    <h1>Welcome to Your Luxurious Stay</h1>
-</div>
+    <nav>
+      <a class="nav-link" href="booking.html">Book</a>
+      <a class="nav-link" href="food.html">Order Food</a>
+      <a class="nav-link" href="bill.html">Bill</a>
+    </nav>
+  </div>
 
-<a href="booking.html" class="btn">Book a Room</a>
-<a href="food.html" class="btn">Order Food</a>
-<a href="bill.html" class="btn">View Bill</a>
+  <!-- Hero -->
+  <main class="hero" role="main" aria-label="Hero">
+    <div class="hero-left">
+      <div class="eyebrow">Welcome</div>
+      <h1>Experience Royal Comfort & Timeless Luxury</h1>
+      <p class="lead">Stay where elegance meets impeccable service. Book a suite, enjoy curated dining, and let Buddy’s be your royal retreat.</p>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="booking.html" aria-label="Book a Room">
+          Book a Room
+        </a>
+        <a class="btn btn-ghost" href="food.html" aria-label="Order Food">
+          Order Food
+        </a>
+        <a class="btn btn-ghost" href="bill.html" aria-label="View Bill">
+          View Bill
+        </a>
+      </div>
+    </div>
+
+    <aside class="hero-right quick-card" aria-hidden="false">
+      <h4>Quick Info</h4>
+      <p>Check availability, order on-demand, and pay securely via QR at checkout.</p>
+
+      <div class="feature-list" role="list">
+        <div class="feature" role="listitem"><span>24/7 Room Service</span><strong>Included</strong></div>
+        <div class="feature" role="listitem"><span>Free Wi-Fi</span><strong>Yes</strong></div>
+        <div class="feature" role="listitem"><span>Complimentary Breakfast</span><strong>Daily</strong></div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Rooms preview -->
+  <section class="section" aria-label="Rooms">
+    <h2 style="margin-top:0; font-family:'Playfair Display', serif; color:var(--gold)">Our Rooms</h2>
+    <div class="grid">
+      <article class="room-card">
+        <img src="https://source.unsplash.com/600x400/?hotel-room,luxury" alt="Suite">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong>Suite</strong>
+            <div style="color:var(--muted)">Spacious suite with sea view</div>
+          </div>
+          <div style="text-align:right">
+            <div style="color:var(--gold); font-weight:700">₹5,000 / night</div>
+            <div style="color:var(--muted); font-size:13px">Includes taxes</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="room-card">
+        <img src="https://source.unsplash.com/600x400/?hotel-deluxe" alt="Deluxe">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong>Deluxe</strong>
+            <div style="color:var(--muted)">Elegant room with king bed</div>
+          </div>
+          <div style="text-align:right">
+            <div style="color:var(--gold); font-weight:700">₹3,500 / night</div>
+            <div style="color:var(--muted); font-size:13px">Includes taxes</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="room-card">
+        <img src="https://source.unsplash.com/600x400/?hotel-standard-room" alt="Standard">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong>Standard</strong>
+            <div style="color:var(--muted)">Comfortable stay, great value</div>
+          </div>
+          <div style="text-align:right">
+            <div style="color:var(--gold); font-weight:700">₹2,000 / night</div>
+            <div style="color:var(--muted); font-size:13px">Includes taxes</div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Dining preview -->
+  <section class="section" aria-label="Dining">
+    <h2 style="margin-top:0; font-family:'Playfair Display', serif; color:var(--gold)">Dining & Delicacies</h2>
+    <div class="grid">
+      <article class="room-card">
+        <img src="https://source.unsplash.com/600x400/?gourmet,food" alt="Gourmet">
+        <div><strong>Gourmet Picks</strong><div style="color:var(--muted)">Curated by our head chef</div></div>
+      </article>
+      <article class="room-card">
+        <img src="https://source.unsplash.com/600x400/?dessert" alt="Dessert">
+        <div><strong>Signature Desserts</strong><div style="color:var(--muted)">Decadent and beautiful</div></div>
+      </article>
+      <article class="room-card">
+        <img src="https://source.unsplash.com/600x400/?cocktail" alt="Bar">
+        <div><strong>Royal Bar</strong><div style="color:var(--muted)">Craft cocktails & vintage wines</div></div>
+      </article>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="yr"></span> Buddy's Luxury Hotel — Crafted for comfort & elegance • <span style="color:var(--gold)">Book, Dine, Relax</span>
+  </footer>
+
+  <script>
+    // small helpers
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // go home when clicking logo (already anchor)
+    (function(){
+      // Smooth progressive enhancement for buttons
+      document.querySelectorAll('.btn').forEach(btn=>{
+        btn.addEventListener('mouseenter', ()=> btn.style.boxShadow = '0 18px 40px rgba(2,8,23,0.6)');
+        btn.addEventListener('mouseleave', ()=> btn.style.boxShadow = '');
+      });
+    })();
+  </script>
 
 </body>
 </html>
