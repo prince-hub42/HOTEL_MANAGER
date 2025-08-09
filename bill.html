@@ -1,157 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Bill Summary</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: "Poppins", sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #f4f4f4;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #ddd;
-      text-align: left;
-    }
-    th {
-      background: #007BFF;
-      color: white;
-    }
-    .total {
-      text-align: right;
-      font-size: 1.2em;
-      margin-top: 20px;
-      background: #fff;
-      padding: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    button {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      background: red;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    button:hover {
-      background: darkred;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Final Bill - Buddy's Hotel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    color: white;
+  }
+  h1 {
+    text-align: center;
+    color: #f9d423;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+  th {
+    background: rgba(0,0,0,0.5);
+    color: #f9d423;
+  }
+  tfoot td {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  .total {
+    color: #00ffc8;
+  }
+  .btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 20px;
+    background: linear-gradient(90deg, #ff4e50, #f9d423);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .btn:hover {
+    box-shadow: 0 0 15px white;
+    transform: scale(1.05);
+  }
+</style>
 </head>
 <body>
 
-  <h1>Bill Summary</h1>
+<h1>Final Bill</h1>
 
-  <!-- Room Booking Table -->
-  <h2>Room Booking</h2>
-  <table id="roomTable">
-    <thead>
-      <tr>
-        <th>Room Type</th>
-        <th>Nights</th>
-        <th>Price/Night</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<table id="billTable">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Details</th>
+      <th>Price (₹)</th>
+    </tr>
+  </thead>
+  <tbody id="billBody">
+    <!-- Bill rows will be injected here -->
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="2">Grand Total</td>
+      <td class="total" id="grandTotal">₹0</td>
+    </tr>
+  </tfoot>
+</table>
 
-  <!-- Food Order Table -->
-  <h2>Food Order</h2>
-  <table id="foodTable">
-    <thead>
-      <tr>
-        <th>Food Item</th>
-        <th>Quantity</th>
-        <th>Price Each</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<a href="index.html" class="btn">Back to Home</a>
 
-  <!-- Grand Total -->
-  <div class="total" id="grandTotal">Grand Total: ₹0</div>
+<script>
+  const billBody = document.getElementById('billBody');
+  const grandTotalEl = document.getElementById('grandTotal');
+  let grandTotal = 0;
 
-  <button onclick="clearData()">Clear All Data</button>
+  // --- Get room booking from localStorage ---
+  const roomName = localStorage.getItem('roomName');
+  const roomNights = localStorage.getItem('roomNights');
+  const roomTotal = parseFloat(localStorage.getItem('roomTotal')) || 0;
 
-  <script>
-    function loadBill() {
-      let grandTotal = 0;
+  if (roomName && roomTotal) {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${roomName}</td>
+      <td>${roomNights} night(s)</td>
+      <td>₹${roomTotal}</td>
+    `;
+    billBody.appendChild(row);
+    grandTotal += roomTotal;
+  }
 
-      // --- ROOM BOOKING ---
-      const roomBooking = JSON.parse(localStorage.getItem('roomBooking'));
-      const roomTableBody = document.querySelector('#roomTable tbody');
+  // --- Get food cart from localStorage ---
+  const foodCart = JSON.parse(localStorage.getItem('foodCart')) || {};
+  for (let itemName in foodCart) {
+    const item = foodCart[itemName];
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${itemName}</td>
+      <td>${item.quantity} × ₹${item.price}</td>
+      <td>₹${item.price * item.quantity}</td>
+    `;
+    billBody.appendChild(row);
+    grandTotal += item.price * item.quantity;
+  }
 
-      if (roomBooking) {
-        const roomTotal = roomBooking.pricePerNight * roomBooking.nights;
-        grandTotal += roomTotal;
-        roomTableBody.innerHTML = `
-          <tr>
-            <td>${roomBooking.roomType}</td>
-            <td>${roomBooking.nights}</td>
-            <td>₹${roomBooking.pricePerNight}</td>
-            <td>₹${roomTotal}</td>
-          </tr>
-        `;
-      } else {
-        roomTableBody.innerHTML = `<tr><td colspan="4">No room booking data found.</td></tr>`;
-      }
+  // --- Update grand total ---
+  grandTotalEl.textContent = `₹${grandTotal}`;
 
-      // --- FOOD ORDER ---
-      const foodCart = JSON.parse(localStorage.getItem('foodCart'));
-      const foodTableBody = document.querySelector('#foodTable tbody');
-
-      if (foodCart && Object.keys(foodCart).length > 0) {
-        let foodTotal = 0;
-        Object.keys(foodCart).forEach(item => {
-          const { price, quantity } = foodCart[item];
-          const itemTotal = price * quantity;
-          foodTotal += itemTotal;
-          foodTableBody.innerHTML += `
-            <tr>
-              <td>${item}</td>
-              <td>${quantity}</td>
-              <td>₹${price}</td>
-              <td>₹${itemTotal}</td>
-            </tr>
-          `;
-        });
-        grandTotal += foodTotal;
-      } else {
-        foodTableBody.innerHTML = `<tr><td colspan="4">No food order data found.</td></tr>`;
-      }
-
-      // Update Grand Total
-      document.getElementById('grandTotal').textContent = `Grand Total: ₹${grandTotal}`;
-    }
-
-    function clearData() {
-      localStorage.removeItem('roomBooking');
-      localStorage.removeItem('foodCart');
-      alert('All data cleared!');
-      location.reload();
-    }
-
-    // Load bill on page load
-    loadBill();
-  </script>
+  // --- Optional: Clear storage so next bill is fresh ---
+  // localStorage.removeItem('roomName');
+  // localStorage.removeItem('roomNights');
+  // localStorage.removeItem('roomTotal');
+  // localStorage.removeItem('foodCart');
+</script>
 
 </body>
 </html>
